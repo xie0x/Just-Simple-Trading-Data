@@ -9,11 +9,15 @@ interface TradingViewResponse {
 interface SymbolAnalysis {
   symbol: string;
   time: string;
+  priceNow: number | null; // <-- added
   hullma9: {
     price: number | null;
     recommendation: "Buy" | "Sell" | "Neutral";
   };
-  rsiRecommendation: number | null;
+  rsi: {
+    value: number | null;
+    recommendation: "Buy" | "Sell" | "Neutral";
+  };
   buySellDominance: {
     buy: number;   // %
     sell: number;  // %
@@ -106,13 +110,38 @@ function analyzeHullMA9(data: TradingViewResponse): {
   return { price: hullma9, recommendation: "Neutral" };
 }
 
+// ---------- RSI Recommendation ----------
+function analyzeRSI(data: TradingViewResponse): {
+  value: number | null;
+  recommendation: "Buy" | "Sell" | "Neutral";
+} {
+  const rsi = data["RSI|15"] as number | null;
+  const rec = data["Rec.RSI|15"] as number | null;
+
+  let recommendation: "Buy" | "Sell" | "Neutral" = "Neutral";
+
+  if (typeof rec === "number") {
+    if (rec > 0) recommendation = "Buy";
+    else if (rec < 0) recommendation = "Sell";
+  } else if (typeof rsi === "number") {
+    if (rsi > 70) recommendation = "Sell";
+    else if (rsi < 30) recommendation = "Buy";
+  }
+
+  return {
+    value: rsi ?? null,
+    recommendation,
+  };
+}
+
 // ---------- Analysis Builder ----------
 function analyzeSymbol(symbol: string, data: TradingViewResponse): SymbolAnalysis {
   return {
     symbol,
     time: new Date().toISOString(),
+    priceNow: (data["close|15"] as number) ?? null,
     hullma9: analyzeHullMA9(data),
-    rsiRecommendation: (data["Rec.RSI|15"] as number) ?? null,
+    rsi: analyzeRSI(data),
     buySellDominance: calculateDominance(data),
     momentum: (data["Mom|15"] as number) ?? null,
     trend: (data["ADX|15"] as number) ?? null,
@@ -147,7 +176,16 @@ function buildAggregateSummary(results: SymbolAnalysis[]): AggregateSummary {
 // ---------- Main Function ----------
 const main = async (): Promise<void> => {
   try {
-    const symbols = ["CRYPTO:BTCUSD", "CRYPTO:ETHUSD", "CRYPTO:BNBUSD", "OANDA:XAUUSD", "CRYPTO:SOLUSD", "CRYPTO:HYPEHUSD", "CRYPTO:XRPUSD", "CRYPTO:SUIUSD"]; // extend as needed
+    const symbols = [
+      "CRYPTO:BTCUSD",
+      "CRYPTO:ETHUSD",
+      "CRYPTO:BNBUSD",
+      "OANDA:XAUUSD",
+      "CRYPTO:SOLUSD",
+      "CRYPTO:HYPEHUSD",
+      "CRYPTO:XRPUSD",
+      "CRYPTO:SUIUSD",
+    ];
     const results: SymbolAnalysis[] = [];
 
     for (const symbol of symbols) {
