@@ -32,7 +32,7 @@ jobs:
 
     - name: Fetch TradingView Market Scanner Data
       run: |
-        node src/index.ts || echo "⚠️ Failed to fetch scanner data"
+        node . || echo "⚠️ Failed to fetch scanner data"
 
     - name: Commit and push if changes
       uses: stefanzweifel/git-auto-commit-action@v5
