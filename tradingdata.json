@@ -23938,5 +23938,176 @@
       "sellPercent": 55.27,
       "neutralPercent": 0
     }
+  },
+  {
+    "symbols": [
+      {
+        "symbol": "CRYPTO:BTCUSD",
+        "time": "2025-08-23T08:43:35.578Z",
+        "priceNow": 115715.46,
+        "hullma9": {
+          "price": 115701.52407407407,
+          "recommendation": "Buy"
+        },
+        "rsi": {
+          "value": 44.13814065424363,
+          "recommendation": "Neutral"
+        },
+        "buySellDominance": {
+          "buy": 27.78,
+          "sell": 72.22
+        },
+        "momentum": -81.92999999999302,
+        "trend": 29.521371552622895,
+        "volatility": -238.60429411749647
+      },
+      {
+        "symbol": "CRYPTO:ETHUSD",
+        "time": "2025-08-23T08:43:35.696Z",
+        "priceNow": 4718.29,
+        "hullma9": {
+          "price": 4703.6802592592585,
+          "recommendation": "Buy"
+        },
+        "rsi": {
+          "value": 45.08834635785998,
+          "recommendation": "Neutral"
+        },
+        "buySellDominance": {
+          "buy": 0,
+          "sell": 100
+        },
+        "momentum": -20.43000000000029,
+        "trend": 25.706848426098528,
+        "volatility": -23.54017647058481
+      },
+      {
+        "symbol": "CRYPTO:BNBUSD",
+        "time": "2025-08-23T08:43:35.808Z",
+        "priceNow": 886.65,
+        "hullma9": {
+          "price": 885.507962962963,
+          "recommendation": "Buy"
+        },
+        "rsi": {
+          "value": 47.80593986792462,
+          "recommendation": "Neutral"
+        },
+        "buySellDominance": {
+          "buy": 11.76,
+          "sell": 88.24
+        },
+        "momentum": -1.4099999999999682,
+        "trend": 15.838273585776921,
+        "volatility": 0.6049117647037292
+      },
+      {
+        "symbol": "OANDA:XAUUSD",
+        "time": "2025-08-23T08:43:35.937Z",
+        "priceNow": 3371.23,
+        "hullma9": {
+          "price": 3371.598388888888,
+          "recommendation": "Sell"
+        },
+        "rsi": {
+          "value": 61.491453874732656,
+          "recommendation": "Neutral"
+        },
+        "buySellDominance": {
+          "buy": 44.44,
+          "sell": 55.56
+        },
+        "momentum": -1.4450000000001637,
+        "trend": 37.78776414174857,
+        "volatility": 8.120235294120448
+      },
+      {
+        "symbol": "CRYPTO:SOLUSD",
+        "time": "2025-08-23T08:43:36.052Z",
+        "priceNow": 203.15,
+        "hullma9": {
+          "price": 202.7275185185185,
+          "recommendation": "Buy"
+        },
+        "rsi": {
+          "value": 49.57741048631359,
+          "recommendation": "Neutral"
+        },
+        "buySellDominance": {
+          "buy": 0,
+          "sell": 100
+        },
+        "momentum": -3.469999999999999,
+        "trend": 32.81246127862834,
+        "volatility": 2.6551764705881453
+      },
+      {
+        "symbol": "CRYPTO:HYPEHUSD",
+        "time": "2025-08-23T08:43:36.197Z",
+        "priceNow": 43.423,
+        "hullma9": {
+          "price": 43.40427407407407,
+          "recommendation": "Buy"
+        },
+        "rsi": {
+          "value": 38.11201432242737,
+          "recommendation": "Neutral"
+        },
+        "buySellDominance": {
+          "buy": 0,
+          "sell": 100
+        },
+        "momentum": -0.8990000000000009,
+        "trend": 29.45435305946792,
+        "volatility": -0.567052941176506
+      },
+      {
+        "symbol": "CRYPTO:XRPUSD",
+        "time": "2025-08-23T08:43:36.389Z",
+        "priceNow": 3.0524,
+        "hullma9": {
+          "price": 3.050916666666667,
+          "recommendation": "Buy"
+        },
+        "rsi": {
+          "value": 53.80255153861817,
+          "recommendation": "Neutral"
+        },
+        "buySellDominance": {
+          "buy": 100,
+          "sell": 0
+        },
+        "momentum": 0.0038000000000000256,
+        "trend": 26.071407530738846,
+        "volatility": 0.024917352941177473
+      },
+      {
+        "symbol": "CRYPTO:SUIUSD",
+        "time": "2025-08-23T08:43:36.548Z",
+        "priceNow": 3.7522,
+        "hullma9": {
+          "price": 3.7529003703703707,
+          "recommendation": "Sell"
+        },
+        "rsi": {
+          "value": 54.794231009515435,
+          "recommendation": "Neutral"
+        },
+        "buySellDominance": {
+          "buy": 44.44,
+          "sell": 55.56
+        },
+        "momentum": -0.028200000000000003,
+        "trend": 29.923748529604577,
+        "volatility": 0.04538941176471756
+      }
+    ],
+    "summary": {
+      "time": "2025-08-23T08:43:36.548Z",
+      "totalSymbols": 8,
+      "buyPercent": 28.55,
+      "sellPercent": 71.45,
+      "neutralPercent": 0
+    }
   }
 ]
