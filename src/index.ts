@@ -355,7 +355,7 @@ function analyzeSymbol(symbol: string, data: TradingViewResponse): SymbolAnalysi
   const low = (data["low|15"] as number) ?? null;
   const close = (data["close|15"] as number) ?? null;
   const priceNow = close;
-  const newTime = new Date().toISOString();
+  const newTime: string = new Date().toISOString();
 
   const result: SymbolAnalysis = {
     symbol,
@@ -398,7 +398,7 @@ function buildAggregateSummary(results: SymbolAnalysis[]): AggregateSummary {
   const buyPercent = total > 0 ? (totalBuy / total) * 100 : 0;
   const sellPercent = total > 0 ? (totalSell / total) * 100 : 0;
   const neutralPercent = 100 - buyPercent - sellPercent;
-  const newTime = new Date().toISOString();
+  const newTime: string = new Date().toISOString();
 
   return {
     time: newTime,
