@@ -47,6 +47,8 @@ interface SymbolAnalysis {
     decision: Recommendation;
     confidence: Record<Recommendation, number>;
   };
+  activeSessions: string[];
+  marketStatus: "Open" | "Closed";
 }
 
 interface AggregateSummary {
@@ -55,6 +57,63 @@ interface AggregateSummary {
   buyPercent: number;
   sellPercent: number;
   neutralPercent: number;
+  activeSessions: string[];
+}
+
+interface MarketSession {
+  name: string;
+  start: number; // hour in UTC
+  end: number;   // hour in UTC
+}
+
+const sessions: MarketSession[] = [
+  { name: "Tokyo", start: 0, end: 9 },     // 00:00–09:00 UTC
+  { name: "London", start: 7, end: 16 },   // 07:00–16:00 UTC
+  { name: "New York", start: 12, end: 21 } // 12:00–21:00 UTC
+];
+
+function getActiveSessions(date: Date): string[] {
+  const utcHour = date.getUTCHours();
+  return sessions
+    .filter(s => (s.start <= utcHour && utcHour < s.end))
+    .map(s => s.name);
+}
+
+// ---------- Market Hours (Open/Close)----------
+interface MarketHours {
+  open: number;  // UTC hour
+  close: number; // UTC hour
+  days?: number[]; // 0=Sun ... 6=Sat
+}
+
+const marketRules: Record<string, MarketHours | "24/7"> = {
+  // Forex (approx)
+  "forex": { open: 22, close: 22, days: [0,1,2,3,4] }, // Sun 22:00 → Fri 22:00 UTC
+  // Crypto
+  "crypto": "24/7",
+  // Stocks (example: US)
+  "us_stock": { open: 13, close: 20, days: [1,2,3,4,5] } // 13:30–20:00 UTC approx
+};
+
+function getSymbolType(symbol: string): "crypto" | "forex" | "us_stock" {
+  if (symbol.endsWith("USDT")) return "crypto";
+  if (/^[A-Z]{6}$/.test(symbol)) return "forex"; // e.g., EURUSD
+  return "us_stock"; // fallback
+}
+
+function isMarketOpen(symbol: string, now: Date): boolean {
+  const type = getSymbolType(symbol);
+  const rule = marketRules[type];
+
+  if (rule === "24/7") return true;
+
+  const utcHour = now.getUTCHours();
+  const day = now.getUTCDay();
+
+  if (rule.days && !rule.days.includes(day)) return false;
+  if (rule.open <= utcHour && utcHour < rule.close) return true;
+
+  return false;
 }
 
 // ---------- Helpers ----------
@@ -296,6 +355,7 @@ function analyzeSymbol(symbol: string, data: TradingViewResponse): SymbolAnalysi
   const low = (data["low|15"] as number) ?? null;
   const close = (data["close|15"] as number) ?? null;
   const priceNow = close;
+  const time = new Date(analysis.time);
 
   const result: SymbolAnalysis = {
     symbol,
@@ -316,6 +376,8 @@ function analyzeSymbol(symbol: string, data: TradingViewResponse): SymbolAnalysi
     bbands: analyzeBBands(data),
     pivotPoints: calculatePivotPoints(high, low, close, priceNow),
     finalSignal: { decision: "Neutral", confidence: { Buy: 0, Sell: 0, Neutral: 100 } },
+    activeSessions: getActiveSessions(time)
+    marketStatus: isMarketOpen(symbol, time) ? "Open" : "Closed"
   };
 
   result.finalSignal = buildFinalSignal(result);
@@ -336,6 +398,7 @@ function buildAggregateSummary(results: SymbolAnalysis[]): AggregateSummary {
   const buyPercent = total > 0 ? (totalBuy / total) * 100 : 0;
   const sellPercent = total > 0 ? (totalSell / total) * 100 : 0;
   const neutralPercent = 100 - buyPercent - sellPercent;
+  const time = new Date(analysis.time);
 
   return {
     time: new Date().toISOString(),
@@ -343,6 +406,7 @@ function buildAggregateSummary(results: SymbolAnalysis[]): AggregateSummary {
     buyPercent: parseFloat(buyPercent.toFixed(2)),
     sellPercent: parseFloat(sellPercent.toFixed(2)),
     neutralPercent: parseFloat(neutralPercent.toFixed(2)),
+    activeSessions: getActiveSessions(time)
   };
 }
 
@@ -369,7 +433,7 @@ const main = async (): Promise<void> => {
     const aggregate = buildAggregateSummary(results);
 
     // code version: 0.2
-    const file = "data/tradingdata_v02.json";
+    const file = "data/tradingdata_v02_1.json";
     let history: { symbols: SymbolAnalysis[]; summary: AggregateSummary }[] = [];
 
     if (await fs.pathExists(file)) {
