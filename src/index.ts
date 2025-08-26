@@ -118,7 +118,7 @@ function isMarketOpen(symbol: string, now: Date): boolean {
 
 // ---------- Helpers ----------
 const buildUrl = (symbol: string): string => {
-  return `https://scanner.tradingview.com/symbol?symbol=${symbol}&fields=15,RSI|15,Mom|15,ADX|15,MACD.macd|15,MACD.signal|15,AO|15,Rec.RSI|15,Rec.HullMA9|15,HullMA9|15,close|15,high|15,low|15`;
+  return `https://scanner.tradingview.com/symbol?symbol=${symbol}&fields=15,RSI|15,RSI[1]|15,Stoch.K|15,Stoch.D|15,Stoch.K[1]|15,Stoch.D[1]|15,CCI20|15,CCI20[1]|15,ADX|15,ADX+DI|15,ADX-DI|15,ADX+DI[1]|15,ADX-DI[1]|15,AO|15,AO[1]|15,AO[2]|15,Mom|15,Mom[1]|15,MACD.macd|15,MACD.signal|15,Rec.Stoch.RSI|15,Stoch.RSI.K|15,Rec.WR|15,W.R|15,Rec.BBPower|15,BBPower|15,Rec.UO|15,UO|15,EMA10|15,close|15,SMA10|15,EMA20|15,SMA20|15,EMA30|15,SMA30|15,EMA50|15,SMA50|15,EMA100|15,SMA100|15,EMA200|15,SMA200|15,Rec.Ichimoku|15,Ichimoku.BLine|15,Rec.VWMA|15,VWMA|15,Rec.HullMA9|15,HullMA9|15,Pivot.M.Classic.S3|15,Pivot.M.Classic.S2|15,Pivot.M.Classic.S1|15,Pivot.M.Classic.Middle|15,Pivot.M.Classic.R1|15,Pivot.M.Classic.R2|15,Pivot.M.Classic.R3|15,Pivot.M.Fibonacci.S3|15,Pivot.M.Fibonacci.S2|15,Pivot.M.Fibonacci.S1|15,Pivot.M.Fibonacci.Middle|15,Pivot.M.Fibonacci.R1|15,Pivot.M.Fibonacci.R2|15,Pivot.M.Fibonacci.R3|15,Pivot.M.Camarilla.S3|15,Pivot.M.Camarilla.S2|15,Pivot.M.Camarilla.S1|15,Pivot.M.Camarilla.Middle|15,Pivot.M.Camarilla.R1|15,Pivot.M.Camarilla.R2|15,Pivot.M.Camarilla.R3|15,Pivot.M.Woodie.S3|15,Pivot.M.Woodie.S2|15,Pivot.M.Woodie.S1|15,Pivot.M.Woodie.Middle|15,Pivot.M.Woodie.R1|15,Pivot.M.Woodie.R2|15,Pivot.M.Woodie.R3|15,Pivot.M.Demark.S1|15,Pivot.M.Demark.Middle|15,Pivot.M.Demark.R1|15,Pivot.M.HighLow.S3|15,Pivot.M.HighLow.S2|15,Pivot.M.HighLow.S1|15,Pivot.M.HighLow.Middle|15,Pivot.M.HighLow.R1|15,Pivot.M.HighLow.R2|15,Pivot.M.HighLow.R3&no_404=true`;
 };
 
 // ---------- Dominance ----------
@@ -191,6 +191,7 @@ function analyzeHullMA9(data: TradingViewResponse): IndicatorWithPrice {
 function analyzeRSI(data: TradingViewResponse): IndicatorWithPrice {
   const rsi = data["RSI|15"] as number | null;
   const rec = data["Rec.RSI|15"] as number | null;
+  const close = data["close|15"] as number | null;
 
   let recommendation: Recommendation = "Neutral";
 
@@ -202,20 +203,28 @@ function analyzeRSI(data: TradingViewResponse): IndicatorWithPrice {
     else if (rsi < 30) recommendation = "Buy";
   }
 
-  return { price: null, value: rsi ?? null, recommendation };
+  return { price: close, value: rsi ?? null, recommendation };
 }
 
 // ---------- EMA ----------
 function analyzeEMA(data: TradingViewResponse): IndicatorWithPrice {
-  // If you later fetch EMA values from API, replace null
-  const ema = null; 
-  return { price: null, value: ema, recommendation: "Neutral" };
+  const ema20 = data["EMA20|15"] as number | null;
+  const close = data["close|15"] as number | null;
+
+  let recommendation: Recommendation = "Neutral";
+  if (ema20 !== null && close !== null) {
+    if (close > ema20) recommendation = "Buy";
+    else if (close < ema20) recommendation = "Sell";
+  }
+
+  return { price: close, value: ema20, recommendation };
 }
 
 // ---------- MACD ----------
 function analyzeMACD(data: TradingViewResponse): IndicatorWithPrice {
   const macd = data["MACD.macd|15"] as number | null;
   const signal = data["MACD.signal|15"] as number | null;
+  const close = data["close|15"] as number | null;
 
   let recommendation: Recommendation = "Neutral";
   if (macd !== null && signal !== null) {
@@ -223,45 +232,80 @@ function analyzeMACD(data: TradingViewResponse): IndicatorWithPrice {
     else if (macd < signal) recommendation = "Sell";
   }
 
-  return { price: null, value: macd, recommendation };
+  return { price: close, value: macd, recommendation };
 }
 
 // ---------- Stochastic ----------
 function analyzeStoch(data: TradingViewResponse): IndicatorWithPrice {
-  // Placeholder until you fetch stoch values from API
-  const stoch = null;
-  return { price: null, value: stoch, recommendation: "Neutral" };
+  const k = data["Stoch.K|15"] as number | null;
+  const d = data["Stoch.D|15"] as number | null;
+  const close = data["close|15"] as number | null;
+
+  let recommendation: Recommendation = "Neutral";
+  if (k !== null && d !== null) {
+    if (k > d && k < 80) recommendation = "Buy";
+    else if (k < d && k > 20) recommendation = "Sell";
+  }
+
+  return { price: close, value: k, recommendation };
 }
 
 // ---------- ADX ----------
 function analyzeADX(data: TradingViewResponse): IndicatorWithPrice {
   const adx = data["ADX|15"] as number | null;
-  let recommendation: Recommendation = "Neutral";
+  const plusDI = data["ADX+DI|15"] as number | null;
+  const minusDI = data["ADX-DI|15"] as number | null;
+  const close = data["close|15"] as number | null;
 
-  if (typeof adx === "number") {
-    if (adx > 25) recommendation = "Buy";
-    else if (adx < 20) recommendation = "Sell";
+  let recommendation: Recommendation = "Neutral";
+  if (adx !== null && plusDI !== null && minusDI !== null) {
+    if (adx > 20 && plusDI > minusDI) recommendation = "Buy";
+    if (adx > 20 && minusDI > plusDI) recommendation = "Sell";
   }
 
-  return { price: null, value: adx, recommendation };
+  return { price: close, value: adx, recommendation };
 }
 
 // ---------- CCI ----------
 function analyzeCCI(data: TradingViewResponse): IndicatorWithPrice {
-  const cci = null; // later if API provides
-  return { price: null, value: cci, recommendation: "Neutral" };
+  const cci = data["CCI20|15"] as number | null;
+  const close = data["close|15"] as number | null;
+
+  let recommendation: Recommendation = "Neutral";
+  if (cci !== null) {
+    if (cci > 100) recommendation = "Buy";
+    else if (cci < -100) recommendation = "Sell";
+  }
+
+  return { price: close, value: cci, recommendation };
 }
 
 // ---------- Williams %R ----------
 function analyzeWillR(data: TradingViewResponse): IndicatorWithPrice {
-  const willr = null; // placeholder
-  return { price: null, value: willr, recommendation: "Neutral" };
+  const willr = data["W.R|15"] as number | null;
+  const close = data["close|15"] as number | null;
+
+  let recommendation: Recommendation = "Neutral";
+  if (willr !== null) {
+    if (willr < -80) recommendation = "Buy";
+    else if (willr > -20) recommendation = "Sell";
+  }
+
+  return { price: close, value: willr, recommendation };
 }
 
 // ---------- Bollinger Bands ----------
 function analyzeBBands(data: TradingViewResponse): IndicatorWithPrice {
-  const bbands = null; // placeholder
-  return { price: null, value: bbands, recommendation: "Neutral" };
+  const bbPower = data["BBPower|15"] as number | null;
+  const close = data["close|15"] as number | null;
+
+  let recommendation: Recommendation = "Neutral";
+  if (bbPower !== null) {
+    if (bbPower > 0) recommendation = "Buy";
+    else if (bbPower < 0) recommendation = "Sell";
+  }
+
+  return { price: close, value: bbPower, recommendation };
 }
 
 // ---------- Pivot Points ----------
