@@ -13,11 +13,13 @@ Simple trading recommendation scanner based on real-time TradingView data Scanne
 
 <h2 id="about-the-project"> 🪶 Project Features</h2>
 
-* Recommendations using the HullMA9 and RSI methods
+* Recommendations using multiple methods such as HULLMA9, RSI, EMA, MACD, STOCH, ADX, CCI, WILLR, BBANDS, and with final signal decision
 * Buy Sell Dominance
 * Momentum
 * Trend
 * Volatility
+* Trading Market Sessions
+* Trading Market Status (open/close)
 
 
 ![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
