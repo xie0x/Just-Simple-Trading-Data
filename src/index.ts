@@ -108,20 +108,26 @@ function calculateDominance(data: TradingViewResponse) {
 }
 
 // ---------- Indicators ----------
-function analyzeHullMA9(data: TradingViewResponse) {
+// ---------- HullMA9 ----------
+function analyzeHullMA9(data: TradingViewResponse): IndicatorWithPrice {
   const hullma9 = data["HullMA9|15"] as number | null;
   const close = data["close|15"] as number | null;
 
   if (hullma9 === null || close === null) {
-    return { price: null, value: null, recommendation: "Neutral" as Recommendation };
+    return { price: null, value: null, recommendation: "Neutral" };
   }
 
-  if (close > hullma9) return { price: hullma9, value: hullma9, recommendation: "Buy" };
-  if (close < hullma9) return { price: hullma9, value: hullma9, recommendation: "Sell" };
+  if (close > hullma9) {
+    return { price: hullma9, value: hullma9, recommendation: "Buy" };
+  }
+  if (close < hullma9) {
+    return { price: hullma9, value: hullma9, recommendation: "Sell" };
+  }
   return { price: hullma9, value: hullma9, recommendation: "Neutral" };
 }
 
-function analyzeRSI(data: TradingViewResponse): IndicatorResult {
+// ---------- RSI ----------
+function analyzeRSI(data: TradingViewResponse): IndicatorWithPrice {
   const rsi = data["RSI|15"] as number | null;
   const rec = data["Rec.RSI|15"] as number | null;
 
@@ -135,7 +141,66 @@ function analyzeRSI(data: TradingViewResponse): IndicatorResult {
     else if (rsi < 30) recommendation = "Buy";
   }
 
-  return { value: rsi ?? null, recommendation };
+  return { price: null, value: rsi ?? null, recommendation };
+}
+
+// ---------- EMA ----------
+function analyzeEMA(data: TradingViewResponse): IndicatorWithPrice {
+  // If you later fetch EMA values from API, replace null
+  const ema = null; 
+  return { price: null, value: ema, recommendation: "Neutral" };
+}
+
+// ---------- MACD ----------
+function analyzeMACD(data: TradingViewResponse): IndicatorWithPrice {
+  const macd = data["MACD.macd|15"] as number | null;
+  const signal = data["MACD.signal|15"] as number | null;
+
+  let recommendation: Recommendation = "Neutral";
+  if (macd !== null && signal !== null) {
+    if (macd > signal) recommendation = "Buy";
+    else if (macd < signal) recommendation = "Sell";
+  }
+
+  return { price: null, value: macd, recommendation };
+}
+
+// ---------- Stochastic ----------
+function analyzeStoch(data: TradingViewResponse): IndicatorWithPrice {
+  // Placeholder until you fetch stoch values from API
+  const stoch = null;
+  return { price: null, value: stoch, recommendation: "Neutral" };
+}
+
+// ---------- ADX ----------
+function analyzeADX(data: TradingViewResponse): IndicatorWithPrice {
+  const adx = data["ADX|15"] as number | null;
+  let recommendation: Recommendation = "Neutral";
+
+  if (typeof adx === "number") {
+    if (adx > 25) recommendation = "Buy";
+    else if (adx < 20) recommendation = "Sell";
+  }
+
+  return { price: null, value: adx, recommendation };
+}
+
+// ---------- CCI ----------
+function analyzeCCI(data: TradingViewResponse): IndicatorWithPrice {
+  const cci = null; // later if API provides
+  return { price: null, value: cci, recommendation: "Neutral" };
+}
+
+// ---------- Williams %R ----------
+function analyzeWillR(data: TradingViewResponse): IndicatorWithPrice {
+  const willr = null; // placeholder
+  return { price: null, value: willr, recommendation: "Neutral" };
+}
+
+// ---------- Bollinger Bands ----------
+function analyzeBBands(data: TradingViewResponse): IndicatorWithPrice {
+  const bbands = null; // placeholder
+  return { price: null, value: bbands, recommendation: "Neutral" };
 }
 
 // ---------- Pivot Points ----------
@@ -240,13 +305,13 @@ function analyzeSymbol(symbol: string, data: TradingViewResponse): SymbolAnalysi
     momentum: (data["Mom|15"] as number) ?? null,
     trend: (data["ADX|15"] as number) ?? null,
     volatility: (data["AO|15"] as number) ?? null,
-    ema: { value: null, recommendation: "Neutral" },
-    macd: { value: null, recommendation: "Neutral" },
-    stoch: { value: null, recommendation: "Neutral" },
-    adx: { value: (data["ADX|15"] as number) ?? null, recommendation: "Neutral" },
-    cci: { value: null, recommendation: "Neutral" },
-    willr: { value: null, recommendation: "Neutral" },
-    bbands: { value: null, recommendation: "Neutral" },
+    ema: analyzeEMA(data),
+    macd: analyzeMACD(data),
+    stoch: analyzeStoch(data),
+    adx: analyzeADX(data),
+    cci: analyzeCCI(data),
+    willr: analyzeWillR(data),
+    bbands: analyzeBBands(data),
     pivotPoints: calculatePivotPoints(high, low, close, priceNow),
     finalSignal: { decision: "Neutral", confidence: { Buy: 0, Sell: 0, Neutral: 100 } },
   };
