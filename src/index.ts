@@ -356,10 +356,11 @@ function analyzeSymbol(symbol: string, data: TradingViewResponse): SymbolAnalysi
   const close = (data["close|15"] as number) ?? null;
   const priceNow = close;
   const newTime: string = new Date().toISOString();
+  const dateObj = new Date(newTime);
 
   const result: SymbolAnalysis = {
     symbol,
-    time: newTime,
+    time: new Date().toISOString(),
     priceNow,
     hullma9: analyzeHullMA9(data),
     rsi: analyzeRSI(data),
@@ -376,8 +377,8 @@ function analyzeSymbol(symbol: string, data: TradingViewResponse): SymbolAnalysi
     bbands: analyzeBBands(data),
     pivotPoints: calculatePivotPoints(high, low, close, priceNow),
     finalSignal: { decision: "Neutral", confidence: { Buy: 0, Sell: 0, Neutral: 100 } },
-    activeSessions: getActiveSessions(newTime),
-    marketStatus: isMarketOpen(symbol, newTime) ? "Open" : "Closed"
+    activeSessions: getActiveSessions(dateObj),
+    marketStatus: isMarketOpen(symbol, dateObj) ? "Open" : "Closed"
   };
 
   result.finalSignal = buildFinalSignal(result);
@@ -399,14 +400,15 @@ function buildAggregateSummary(results: SymbolAnalysis[]): AggregateSummary {
   const sellPercent = total > 0 ? (totalSell / total) * 100 : 0;
   const neutralPercent = 100 - buyPercent - sellPercent;
   const newTime: string = new Date().toISOString();
+  const dateObj = new Date(newTime);
 
   return {
-    time: newTime,
+    time: new Date().toISOString(),
     totalSymbols: results.length,
     buyPercent: parseFloat(buyPercent.toFixed(2)),
     sellPercent: parseFloat(sellPercent.toFixed(2)),
     neutralPercent: parseFloat(neutralPercent.toFixed(2)),
-    activeSessions: getActiveSessions(newTime)
+    activeSessions: getActiveSessions(dateObj)
   };
 }
 
