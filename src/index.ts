@@ -9,13 +9,13 @@ interface TradingViewResponse {
 type Recommendation = "Buy" | "Sell" | "Neutral";
 
 interface PivotGroup {
-  pp?: number | null;
-  r1?: number | null;
-  r2?: number | null;
-  r3?: number | null;
-  s1?: number | null;
-  s2?: number | null;
-  s3?: number | null;
+  pp: number | null;
+  r1: number | null;
+  r2: number | null;
+  r3: number | null;
+  s1: number | null;
+  s2: number | null;
+  s3: number | null;
 }
 
 interface PivotLevels {
@@ -468,7 +468,7 @@ function analyzeSymbol(symbol: string, data: TradingViewResponse): SymbolAnalysi
     cci: analyzeCCI(data),
     willr: analyzeWillR(data),
     bbands: analyzeBBands(data),
-    pivotPoints: calculatePivotPoints(high, low, close, priceNow),
+    pivotPoints: calculatePivotPoints(data, high, low, priceNow),
     finalSignal: { decision: "Neutral", confidence: { Buy: 0, Sell: 0, Neutral: 100 } },
     activeSessions: getActiveSessions(dateObj),
     marketStatus: isMarketOpen(symbol, dateObj) ? "Open" : "Closed"
