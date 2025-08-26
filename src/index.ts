@@ -375,7 +375,7 @@ function analyzeSymbol(symbol: string, data: TradingViewResponse): SymbolAnalysi
     bbands: analyzeBBands(data),
     pivotPoints: calculatePivotPoints(high, low, close, priceNow),
     finalSignal: { decision: "Neutral", confidence: { Buy: 0, Sell: 0, Neutral: 100 } },
-    activeSessions: getActiveSessions(time)
+    activeSessions: getActiveSessions(time),
     marketStatus: isMarketOpen(symbol, time) ? "Open" : "Closed"
   };
 
