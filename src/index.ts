@@ -9,13 +9,13 @@ interface TradingViewResponse {
 type Recommendation = "Buy" | "Sell" | "Neutral";
 
 interface PivotGroup {
-  pp?: number;
-  r1?: number;
-  r2?: number;
-  r3?: number;
-  s1?: number;
-  s2?: number;
-  s3?: number;
+  pp?: number | null;
+  r1?: number | null;
+  r2?: number | null;
+  r3?: number | null;
+  s1?: number | null;
+  s2?: number | null;
+  s3?: number | null;
 }
 
 interface PivotLevels {
