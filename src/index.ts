@@ -435,7 +435,7 @@ const main = async (): Promise<void> => {
     const aggregate = buildAggregateSummary(results);
 
     // code version: 0.2
-    const file = "data/tradingdata_v02_1.json";
+    const file = "data/tradingdata_v02.json";
     let history: { symbols: SymbolAnalysis[]; summary: AggregateSummary }[] = [];
 
     if (await fs.pathExists(file)) {
