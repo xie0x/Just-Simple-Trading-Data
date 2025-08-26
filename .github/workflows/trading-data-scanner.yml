@@ -37,5 +37,5 @@ jobs:
     - name: Commit and push if changes
       uses: stefanzweifel/git-auto-commit-action@v5
       with:
-        commit_message: "📈 Auto update trading scanner data"
+        commit_message: "📈 Auto update trading data signal by @xie0x"
         branch: main
