@@ -6,25 +6,45 @@ interface TradingViewResponse {
   [key: string]: number | string | null;
 }
 
+type Recommendation = "Buy" | "Sell" | "Neutral";
+
+interface PivotLevels {
+  classic: Record<string, number>;
+  fibonacci: Record<string, number>;
+  camarilla: Record<string, number>;
+  woodie: Record<string, number>;
+  demark: Record<string, number>;
+  highLow: { high: number | null; low: number | null };
+  recommendation: Recommendation;
+}
+
+interface IndicatorResult {
+  value: number | null;
+  recommendation: Recommendation;
+}
+
 interface SymbolAnalysis {
   symbol: string;
   time: string;
-  priceNow: number | null; // <-- added
-  hullma9: {
-    price: number | null;
-    recommendation: "Buy" | "Sell" | "Neutral";
-  };
-  rsi: {
-    value: number | null;
-    recommendation: "Buy" | "Sell" | "Neutral";
-  };
-  buySellDominance: {
-    buy: number;   // %
-    sell: number;  // %
-  };
+  priceNow: number | null;
+  hullma9: IndicatorResult & { price: number | null };
+  rsi: IndicatorResult;
+  buySellDominance: { buy: number; sell: number };
   momentum: number | null;
   trend: number | null;
   volatility: number | null;
+  ema: IndicatorResult;
+  macd: IndicatorResult;
+  stoch: IndicatorResult;
+  adx: IndicatorResult;
+  cci: IndicatorResult;
+  willr: IndicatorResult;
+  bbands: IndicatorResult;
+  pivotPoints: PivotLevels;
+  finalSignal: {
+    decision: Recommendation;
+    confidence: Record<Recommendation, number>;
+  };
 }
 
 interface AggregateSummary {
@@ -37,15 +57,14 @@ interface AggregateSummary {
 
 // ---------- Helpers ----------
 const buildUrl = (symbol: string): string => {
-  return `https://scanner.tradingview.com/symbol?symbol=${symbol}&fields=15,RSI|15,Mom|15,ADX|15,MACD.macd|15,MACD.signal|15,AO|15,Rec.RSI|15,Rec.HullMA9|15,HullMA9|15,close|15&no_404=true`;
+  return `https://scanner.tradingview.com/symbol?symbol=${symbol}&fields=15,RSI|15,Mom|15,ADX|15,MACD.macd|15,MACD.signal|15,AO|15,Rec.RSI|15,Rec.HullMA9|15,HullMA9|15,close|15,high|15,low|15`;
 };
 
-// ---------- Buy/Sell Dominance Logic ----------
+// ---------- Dominance ----------
 function calculateDominance(data: TradingViewResponse) {
   let buyScore = 0;
   let sellScore = 0;
 
-  // RSI logic
   const rsi = data["RSI|15"] as number | null;
   if (typeof rsi === "number") {
     if (rsi > 70) sellScore += 25;
@@ -54,27 +73,23 @@ function calculateDominance(data: TradingViewResponse) {
     else sellScore += 15;
   }
 
-  // Momentum
   const mom = data["Mom|15"] as number | null;
   if (typeof mom === "number") {
     if (mom > 0) buyScore += 25;
     else if (mom < 0) sellScore += 25;
   }
 
-  // ADX
   const adx = data["ADX|15"] as number | null;
   if (typeof adx === "number") {
     if (adx > 20) {
       if (rsi && rsi > 50) buyScore += 25;
       else sellScore += 25;
     } else {
-      // weak trend → neutral contribution
       buyScore += 10;
       sellScore += 10;
     }
   }
 
-  // MACD
   const macd = data["MACD.macd|15"] as number | null;
   const signal = data["MACD.signal|15"] as number | null;
   if (typeof macd === "number" && typeof signal === "number") {
@@ -82,7 +97,6 @@ function calculateDominance(data: TradingViewResponse) {
     else if (macd < signal) sellScore += 25;
   }
 
-  // Normalize to %
   const total = buyScore + sellScore;
   const buyPercent = total > 0 ? (buyScore / total) * 100 : 50;
   const sellPercent = total > 0 ? (sellScore / total) * 100 : 50;
@@ -93,32 +107,25 @@ function calculateDominance(data: TradingViewResponse) {
   };
 }
 
-// ---------- HullMA9 Recommendation ----------
-function analyzeHullMA9(data: TradingViewResponse): {
-  price: number | null;
-  recommendation: "Buy" | "Sell" | "Neutral";
-} {
+// ---------- Indicators ----------
+function analyzeHullMA9(data: TradingViewResponse) {
   const hullma9 = data["HullMA9|15"] as number | null;
   const close = data["close|15"] as number | null;
 
   if (hullma9 === null || close === null) {
-    return { price: null, recommendation: "Neutral" };
+    return { price: null, value: null, recommendation: "Neutral" as Recommendation };
   }
 
-  if (close > hullma9) return { price: hullma9, recommendation: "Buy" };
-  if (close < hullma9) return { price: hullma9, recommendation: "Sell" };
-  return { price: hullma9, recommendation: "Neutral" };
+  if (close > hullma9) return { price: hullma9, value: hullma9, recommendation: "Buy" };
+  if (close < hullma9) return { price: hullma9, value: hullma9, recommendation: "Sell" };
+  return { price: hullma9, value: hullma9, recommendation: "Neutral" };
 }
 
-// ---------- RSI Recommendation ----------
-function analyzeRSI(data: TradingViewResponse): {
-  value: number | null;
-  recommendation: "Buy" | "Sell" | "Neutral";
-} {
+function analyzeRSI(data: TradingViewResponse): IndicatorResult {
   const rsi = data["RSI|15"] as number | null;
   const rec = data["Rec.RSI|15"] as number | null;
 
-  let recommendation: "Buy" | "Sell" | "Neutral" = "Neutral";
+  let recommendation: Recommendation = "Neutral";
 
   if (typeof rec === "number") {
     if (rec > 0) recommendation = "Buy";
@@ -128,25 +135,124 @@ function analyzeRSI(data: TradingViewResponse): {
     else if (rsi < 30) recommendation = "Buy";
   }
 
-  return {
-    value: rsi ?? null,
-    recommendation,
+  return { value: rsi ?? null, recommendation };
+}
+
+// ---------- Pivot Points ----------
+function calculatePivotPoints(
+  high: number | null,
+  low: number | null,
+  close: number | null,
+  priceNow: number | null
+): PivotLevels {
+  if (high === null || low === null || close === null) {
+    return {
+      classic: {},
+      fibonacci: {},
+      camarilla: {},
+      woodie: {},
+      demark: {},
+      highLow: { high, low },
+      recommendation: "Neutral",
+    };
+  }
+
+  const pp = (high + low + close) / 3;
+  const diff = high - low;
+
+  const levels = {
+    classic: { pp, r1: 2 * pp - low, s1: 2 * pp - high },
+    fibonacci: { pp, r1: pp + 0.382 * diff, s1: pp - 0.382 * diff },
+    camarilla: { pp, r1: close + diff * 1.1 / 12, s1: close - diff * 1.1 / 12 },
+    woodie: { pp: (high + low + 2 * close) / 4, r1: (2 * pp - low), s1: (2 * pp - high) },
+    demark: { pp: (high + low + 2 * close) / 4, r1: (2 * pp - low), s1: (2 * pp - high) },
+    highLow: { high, low },
   };
+
+  let recommendation: Recommendation = "Neutral";
+  if (priceNow !== null) {
+    if (priceNow > levels.classic.r1) recommendation = "Buy";
+    else if (priceNow < levels.classic.s1) recommendation = "Sell";
+  }
+
+  return { ...levels, recommendation };
+}
+
+// ---------- Final Signal ----------
+function buildFinalSignal(symbol: SymbolAnalysis): SymbolAnalysis["finalSignal"] {
+  const votes: Recommendation[] = [
+    symbol.hullma9.recommendation,
+    symbol.rsi.recommendation,
+    symbol.macd.recommendation,
+    symbol.ema.recommendation,
+    symbol.stoch.recommendation,
+    symbol.adx.recommendation,
+    symbol.cci.recommendation,
+    symbol.willr.recommendation,
+    symbol.bbands.recommendation,
+    symbol.pivotPoints.recommendation,
+  ];
+
+  let weights: Record<Recommendation, number> = { Buy: 0, Sell: 0, Neutral: 0 };
+
+  for (const vote of votes) {
+    if (vote === "Buy") weights.Buy += 1;
+    if (vote === "Sell") weights.Sell += 1;
+    if (vote === "Neutral") weights.Neutral += 1;
+  }
+
+  weights.Buy += symbol.rsi.recommendation === "Buy" ? 2 : 0;
+  weights.Sell += symbol.rsi.recommendation === "Sell" ? 2 : 0;
+  weights.Buy += symbol.hullma9.recommendation === "Buy" ? 2 : 0;
+  weights.Sell += symbol.hullma9.recommendation === "Sell" ? 2 : 0;
+
+  const total = weights.Buy + weights.Sell + weights.Neutral;
+  const confidence = {
+    Buy: parseFloat(((weights.Buy / total) * 100).toFixed(2)),
+    Sell: parseFloat(((weights.Sell / total) * 100).toFixed(2)),
+    Neutral: parseFloat(((weights.Neutral / total) * 100).toFixed(2)),
+  };
+
+  const decision: Recommendation =
+    confidence.Buy > confidence.Sell && confidence.Buy > confidence.Neutral
+      ? "Buy"
+      : confidence.Sell > confidence.Buy && confidence.Sell > confidence.Neutral
+      ? "Sell"
+      : "Neutral";
+
+  return { decision, confidence };
 }
 
 // ---------- Analysis Builder ----------
 function analyzeSymbol(symbol: string, data: TradingViewResponse): SymbolAnalysis {
-  return {
+  const high = (data["high|15"] as number) ?? null;
+  const low = (data["low|15"] as number) ?? null;
+  const close = (data["close|15"] as number) ?? null;
+  const priceNow = close;
+
+  const result: SymbolAnalysis = {
     symbol,
     time: new Date().toISOString(),
-    priceNow: (data["close|15"] as number) ?? null,
+    priceNow,
     hullma9: analyzeHullMA9(data),
     rsi: analyzeRSI(data),
     buySellDominance: calculateDominance(data),
     momentum: (data["Mom|15"] as number) ?? null,
     trend: (data["ADX|15"] as number) ?? null,
     volatility: (data["AO|15"] as number) ?? null,
+    ema: { value: null, recommendation: "Neutral" },
+    macd: { value: null, recommendation: "Neutral" },
+    stoch: { value: null, recommendation: "Neutral" },
+    adx: { value: (data["ADX|15"] as number) ?? null, recommendation: "Neutral" },
+    cci: { value: null, recommendation: "Neutral" },
+    willr: { value: null, recommendation: "Neutral" },
+    bbands: { value: null, recommendation: "Neutral" },
+    pivotPoints: calculatePivotPoints(high, low, close, priceNow),
+    finalSignal: { decision: "Neutral", confidence: { Buy: 0, Sell: 0, Neutral: 100 } },
   };
+
+  result.finalSignal = buildFinalSignal(result);
+  return result;
 }
 
 // ---------- Aggregate Summary ----------
@@ -173,7 +279,7 @@ function buildAggregateSummary(results: SymbolAnalysis[]): AggregateSummary {
   };
 }
 
-// ---------- Main Function ----------
+// ---------- Main ----------
 const main = async (): Promise<void> => {
   try {
     const symbols = [
@@ -195,17 +301,15 @@ const main = async (): Promise<void> => {
 
     const aggregate = buildAggregateSummary(results);
 
-    const file = "data/tradingdata_v0.1.json";
+    // code version: 0.2
+    const file = "data/tradingdata_v02.json";
     let history: { symbols: SymbolAnalysis[]; summary: AggregateSummary }[] = [];
 
     if (await fs.pathExists(file)) {
       history = await fs.readJson(file);
     }
 
-    history.push({
-      symbols: results,
-      summary: aggregate,
-    });
+    history.push({ symbols: results, summary: aggregate });
 
     await fs.writeJson(file, history, { spaces: 2 });
   } catch (err) {
