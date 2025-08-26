@@ -1,4 +1,4 @@
-# Simple Trading Data [beta]
+# TradingView Data Signal Analyzer
 ![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 <h2 id="about-the-project"> :pencil: About Project</h2>
 Simple trading recommendation scanner based on real-time TradingView data Scanner API.
@@ -11,7 +11,7 @@ Simple trading recommendation scanner based on real-time TradingView data Scanne
 
 ![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
-<h2 id="about-the-project"> 🪶 Project Features</h2>
+<h2 id="about-the-project"> 🪶 Project Features (Beta)</h2>
 
 * Recommendations using multiple methods such as HULLMA9, RSI, EMA, MACD, STOCH, ADX, CCI, WILLR, BBANDS, and with final signal decision.
 * Buy Sell Dominance.
