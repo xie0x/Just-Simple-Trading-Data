@@ -8,15 +8,15 @@ interface TradingViewResponse {
 
 type Recommendation = "Buy" | "Sell" | "Neutral";
 
-const classic: PivotGroup = {
-  s3: toNumber(data["Pivot.M.Classic.S3|15"]),
-  s2: toNumber(data["Pivot.M.Classic.S2|15"]),
-  s1: toNumber(data["Pivot.M.Classic.S1|15"]),
-  pp: toNumber(data["Pivot.M.Classic.Middle|15"]),
-  r1: toNumber(data["Pivot.M.Classic.R1|15"]),
-  r2: toNumber(data["Pivot.M.Classic.R2|15"]),
-  r3: toNumber(data["Pivot.M.Classic.R3|15"]),
-};
+interface PivotGroup {
+  pp: number | null;
+  r1: number | null;
+  r2: number | null;
+  r3: number | null;
+  s1: number | null;
+  s2: number | null;
+  s3: number | null;
+}
 
 interface PivotLevels {
   classic: PivotGroup;
@@ -124,15 +124,6 @@ function isMarketOpen(symbol: string, now: Date): boolean {
   if (rule.open <= utcHour && utcHour < rule.close) return true;
 
   return false;
-}
-
-function toNumber(val: string | number | null | undefined): number | null {
-  if (typeof val === "number") return val;
-  if (typeof val === "string") {
-    const parsed = parseFloat(val);
-    return isNaN(parsed) ? null : parsed;
-  }
-  return null;
 }
 
 // ---------- Helpers ----------
@@ -458,9 +449,9 @@ function buildFinalSignal(symbol: SymbolAnalysis): SymbolAnalysis["finalSignal"]
 
 // ---------- Analysis Builder ----------
 function analyzeSymbol(symbol: string, data: TradingViewResponse): SymbolAnalysis {
-  const high = toNumber(data["high|15"]);
-  const low = toNumber(data["low|15"]);
-  const close = toNumber(data["close|15"]);
+  const high = (data["high|15"] as number) ?? null;
+  const low = (data["low|15"] as number) ?? null;
+  const close = (data["close|15"] as number) ?? null;
   const priceNow = close;
   const newTime: string = new Date().toISOString();
   const dateObj = new Date(newTime);
