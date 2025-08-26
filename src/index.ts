@@ -8,12 +8,22 @@ interface TradingViewResponse {
 
 type Recommendation = "Buy" | "Sell" | "Neutral";
 
+interface PivotGroup {
+  pp?: number;
+  r1?: number;
+  r2?: number;
+  r3?: number;
+  s1?: number;
+  s2?: number;
+  s3?: number;
+}
+
 interface PivotLevels {
-  classic: Record<string, number>;
-  fibonacci: Record<string, number>;
-  camarilla: Record<string, number>;
-  woodie: Record<string, number>;
-  demark: Record<string, number>;
+  classic: PivotGroup;
+  fibonacci: PivotGroup;
+  camarilla: PivotGroup;
+  woodie: PivotGroup;
+  demark: PivotGroup;
   highLow: { high: number | null; low: number | null };
   recommendation: Recommendation;
 }
@@ -310,42 +320,81 @@ function analyzeBBands(data: TradingViewResponse): IndicatorWithPrice {
 
 // ---------- Pivot Points ----------
 function calculatePivotPoints(
+  data: Record<string, number | null>,
   high: number | null,
   low: number | null,
-  close: number | null,
   priceNow: number | null
 ): PivotLevels {
-  if (high === null || low === null || close === null) {
-    return {
-      classic: {},
-      fibonacci: {},
-      camarilla: {},
-      woodie: {},
-      demark: {},
-      highLow: { high, low },
-      recommendation: "Neutral",
-    };
-  }
-
-  const pp = (high + low + close) / 3;
-  const diff = high - low;
-
-  const levels = {
-    classic: { pp, r1: 2 * pp - low, s1: 2 * pp - high },
-    fibonacci: { pp, r1: pp + 0.382 * diff, s1: pp - 0.382 * diff },
-    camarilla: { pp, r1: close + diff * 1.1 / 12, s1: close - diff * 1.1 / 12 },
-    woodie: { pp: (high + low + 2 * close) / 4, r1: (2 * pp - low), s1: (2 * pp - high) },
-    demark: { pp: (high + low + 2 * close) / 4, r1: (2 * pp - low), s1: (2 * pp - high) },
-    highLow: { high, low },
+  const classic: PivotGroup = {
+    s3: data["Pivot.M.Classic.S3|60"] ?? null,
+    s2: data["Pivot.M.Classic.S2|60"] ?? null,
+    s1: data["Pivot.M.Classic.S1|60"] ?? null,
+    pp: data["Pivot.M.Classic.Middle|60"] ?? null,
+    r1: data["Pivot.M.Classic.R1|60"] ?? null,
+    r2: data["Pivot.M.Classic.R2|60"] ?? null,
+    r3: data["Pivot.M.Classic.R3|60"] ?? null,
   };
 
+  const fibonacci: PivotGroup = {
+    s3: data["Pivot.M.Fibonacci.S3|60"] ?? null,
+    s2: data["Pivot.M.Fibonacci.S2|60"] ?? null,
+    s1: data["Pivot.M.Fibonacci.S1|60"] ?? null,
+    pp: data["Pivot.M.Fibonacci.Middle|60"] ?? null,
+    r1: data["Pivot.M.Fibonacci.R1|60"] ?? null,
+    r2: data["Pivot.M.Fibonacci.R2|60"] ?? null,
+    r3: data["Pivot.M.Fibonacci.R3|60"] ?? null,
+  };
+
+  const camarilla: PivotGroup = {
+    s3: data["Pivot.M.Camarilla.S3|60"] ?? null,
+    s2: data["Pivot.M.Camarilla.S2|60"] ?? null,
+    s1: data["Pivot.M.Camarilla.S1|60"] ?? null,
+    pp: data["Pivot.M.Camarilla.Middle|60"] ?? null,
+    r1: data["Pivot.M.Camarilla.R1|60"] ?? null,
+    r2: data["Pivot.M.Camarilla.R2|60"] ?? null,
+    r3: data["Pivot.M.Camarilla.R3|60"] ?? null,
+  };
+
+  const woodie: PivotGroup = {
+    s3: data["Pivot.M.Woodie.S3|60"] ?? null,
+    s2: data["Pivot.M.Woodie.S2|60"] ?? null,
+    s1: data["Pivot.M.Woodie.S1|60"] ?? null,
+    pp: data["Pivot.M.Woodie.Middle|60"] ?? null,
+    r1: data["Pivot.M.Woodie.R1|60"] ?? null,
+    r2: data["Pivot.M.Woodie.R2|60"] ?? null,
+    r3: data["Pivot.M.Woodie.R3|60"] ?? null,
+  };
+
+  const demark: PivotGroup = {
+    s1: data["Pivot.M.Demark.S1|60"] ?? null,
+    pp: data["Pivot.M.Demark.Middle|60"] ?? null,
+    r1: data["Pivot.M.Demark.R1|60"] ?? null,
+  };
+
+  const highLow = {
+    high,
+    low,
+  };
+
+  // --- Recommendation logic (simple: compare to Classic R1/S1) ---
   let recommendation: Recommendation = "Neutral";
   if (priceNow !== null) {
-    if (priceNow > levels.classic.r1) recommendation = "Buy";
-    else if (priceNow < levels.classic.s1) recommendation = "Sell";
+    if (classic.r1 !== null && priceNow > classic.r1) {
+      recommendation = "Buy";
+    } else if (classic.s1 !== null && priceNow < classic.s1) {
+      recommendation = "Sell";
+    }
   }
 
-  return { ...levels, recommendation };
+  return {
+    classic,
+    fibonacci,
+    camarilla,
+    woodie,
+    demark,
+    highLow,
+    recommendation,
+  };
 }
 
 // ---------- Final Signal ----------
