@@ -326,49 +326,49 @@ function calculatePivotPoints(
   priceNow: number | null
 ): PivotLevels {
   const classic: PivotGroup = {
-    s3: data["Pivot.M.Classic.S3|60"] ?? null,
-    s2: data["Pivot.M.Classic.S2|60"] ?? null,
-    s1: data["Pivot.M.Classic.S1|60"] ?? null,
-    pp: data["Pivot.M.Classic.Middle|60"] ?? null,
-    r1: data["Pivot.M.Classic.R1|60"] ?? null,
-    r2: data["Pivot.M.Classic.R2|60"] ?? null,
-    r3: data["Pivot.M.Classic.R3|60"] ?? null,
+    s3: data["Pivot.M.Classic.S3|15"] ?? null,
+    s2: data["Pivot.M.Classic.S2|15"] ?? null,
+    s1: data["Pivot.M.Classic.S1|15"] ?? null,
+    pp: data["Pivot.M.Classic.Middle|15"] ?? null,
+    r1: data["Pivot.M.Classic.R1|15"] ?? null,
+    r2: data["Pivot.M.Classic.R2|15"] ?? null,
+    r3: data["Pivot.M.Classic.R3|15"] ?? null,
   };
 
   const fibonacci: PivotGroup = {
-    s3: data["Pivot.M.Fibonacci.S3|60"] ?? null,
-    s2: data["Pivot.M.Fibonacci.S2|60"] ?? null,
-    s1: data["Pivot.M.Fibonacci.S1|60"] ?? null,
-    pp: data["Pivot.M.Fibonacci.Middle|60"] ?? null,
-    r1: data["Pivot.M.Fibonacci.R1|60"] ?? null,
-    r2: data["Pivot.M.Fibonacci.R2|60"] ?? null,
-    r3: data["Pivot.M.Fibonacci.R3|60"] ?? null,
+    s3: data["Pivot.M.Fibonacci.S3|15"] ?? null,
+    s2: data["Pivot.M.Fibonacci.S2|15"] ?? null,
+    s1: data["Pivot.M.Fibonacci.S1|15"] ?? null,
+    pp: data["Pivot.M.Fibonacci.Middle|15"] ?? null,
+    r1: data["Pivot.M.Fibonacci.R1|15"] ?? null,
+    r2: data["Pivot.M.Fibonacci.R2|15"] ?? null,
+    r3: data["Pivot.M.Fibonacci.R3|15"] ?? null,
   };
 
   const camarilla: PivotGroup = {
-    s3: data["Pivot.M.Camarilla.S3|60"] ?? null,
-    s2: data["Pivot.M.Camarilla.S2|60"] ?? null,
-    s1: data["Pivot.M.Camarilla.S1|60"] ?? null,
-    pp: data["Pivot.M.Camarilla.Middle|60"] ?? null,
-    r1: data["Pivot.M.Camarilla.R1|60"] ?? null,
-    r2: data["Pivot.M.Camarilla.R2|60"] ?? null,
-    r3: data["Pivot.M.Camarilla.R3|60"] ?? null,
+    s3: data["Pivot.M.Camarilla.S3|15"] ?? null,
+    s2: data["Pivot.M.Camarilla.S2|15"] ?? null,
+    s1: data["Pivot.M.Camarilla.S1|15"] ?? null,
+    pp: data["Pivot.M.Camarilla.Middle|15"] ?? null,
+    r1: data["Pivot.M.Camarilla.R1|15"] ?? null,
+    r2: data["Pivot.M.Camarilla.R2|15"] ?? null,
+    r3: data["Pivot.M.Camarilla.R3|15"] ?? null,
   };
 
   const woodie: PivotGroup = {
-    s3: data["Pivot.M.Woodie.S3|60"] ?? null,
-    s2: data["Pivot.M.Woodie.S2|60"] ?? null,
-    s1: data["Pivot.M.Woodie.S1|60"] ?? null,
-    pp: data["Pivot.M.Woodie.Middle|60"] ?? null,
-    r1: data["Pivot.M.Woodie.R1|60"] ?? null,
-    r2: data["Pivot.M.Woodie.R2|60"] ?? null,
-    r3: data["Pivot.M.Woodie.R3|60"] ?? null,
+    s3: data["Pivot.M.Woodie.S3|15"] ?? null,
+    s2: data["Pivot.M.Woodie.S2|15"] ?? null,
+    s1: data["Pivot.M.Woodie.S1|15"] ?? null,
+    pp: data["Pivot.M.Woodie.Middle|15"] ?? null,
+    r1: data["Pivot.M.Woodie.R1|15"] ?? null,
+    r2: data["Pivot.M.Woodie.R2|15"] ?? null,
+    r3: data["Pivot.M.Woodie.R3|15"] ?? null,
   };
 
   const demark: PivotGroup = {
-    s1: data["Pivot.M.Demark.S1|60"] ?? null,
-    pp: data["Pivot.M.Demark.Middle|60"] ?? null,
-    r1: data["Pivot.M.Demark.R1|60"] ?? null,
+    s1: data["Pivot.M.Demark.S1|15"] ?? null,
+    pp: data["Pivot.M.Demark.Middle|15"] ?? null,
+    r1: data["Pivot.M.Demark.R1|15"] ?? null,
   };
 
   const highLow = {
