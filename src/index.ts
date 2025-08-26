@@ -131,29 +131,36 @@ const buildUrl = (symbol: string): string => {
   return `https://scanner.tradingview.com/symbol?symbol=${symbol}&fields=15,RSI|15,RSI[1]|15,Stoch.K|15,Stoch.D|15,Stoch.K[1]|15,Stoch.D[1]|15,CCI20|15,CCI20[1]|15,ADX|15,ADX+DI|15,ADX-DI|15,ADX+DI[1]|15,ADX-DI[1]|15,AO|15,AO[1]|15,AO[2]|15,Mom|15,Mom[1]|15,MACD.macd|15,MACD.signal|15,Rec.Stoch.RSI|15,Stoch.RSI.K|15,Rec.WR|15,W.R|15,Rec.BBPower|15,BBPower|15,Rec.UO|15,UO|15,EMA10|15,close|15,SMA10|15,EMA20|15,SMA20|15,EMA30|15,SMA30|15,EMA50|15,SMA50|15,EMA100|15,SMA100|15,EMA200|15,SMA200|15,Rec.Ichimoku|15,Ichimoku.BLine|15,Rec.VWMA|15,VWMA|15,Rec.HullMA9|15,HullMA9|15,Pivot.M.Classic.S3|15,Pivot.M.Classic.S2|15,Pivot.M.Classic.S1|15,Pivot.M.Classic.Middle|15,Pivot.M.Classic.R1|15,Pivot.M.Classic.R2|15,Pivot.M.Classic.R3|15,Pivot.M.Fibonacci.S3|15,Pivot.M.Fibonacci.S2|15,Pivot.M.Fibonacci.S1|15,Pivot.M.Fibonacci.Middle|15,Pivot.M.Fibonacci.R1|15,Pivot.M.Fibonacci.R2|15,Pivot.M.Fibonacci.R3|15,Pivot.M.Camarilla.S3|15,Pivot.M.Camarilla.S2|15,Pivot.M.Camarilla.S1|15,Pivot.M.Camarilla.Middle|15,Pivot.M.Camarilla.R1|15,Pivot.M.Camarilla.R2|15,Pivot.M.Camarilla.R3|15,Pivot.M.Woodie.S3|15,Pivot.M.Woodie.S2|15,Pivot.M.Woodie.S1|15,Pivot.M.Woodie.Middle|15,Pivot.M.Woodie.R1|15,Pivot.M.Woodie.R2|15,Pivot.M.Woodie.R3|15,Pivot.M.Demark.S1|15,Pivot.M.Demark.Middle|15,Pivot.M.Demark.R1|15,Pivot.M.HighLow.S3|15,Pivot.M.HighLow.S2|15,Pivot.M.HighLow.S1|15,Pivot.M.HighLow.Middle|15,Pivot.M.HighLow.R1|15,Pivot.M.HighLow.R2|15,Pivot.M.HighLow.R3&no_404=true`;
 };
 
+function toNumber(value: string | number | null | undefined): number | null {
+  if (value === null || value === undefined) return null;
+  if (typeof value === "number") return value;
+  const n = Number(value);
+  return isNaN(n) ? null : n;
+}
+
 // ---------- Dominance ----------
 function calculateDominance(data: TradingViewResponse) {
   let buyScore = 0;
   let sellScore = 0;
 
-  const rsi = data["RSI|15"] as number | null;
-  if (typeof rsi === "number") {
+  const rsi = toNumber(data["RSI|15"]);
+  if (rsi !== null) {
     if (rsi > 70) sellScore += 25;
     else if (rsi < 30) buyScore += 25;
     else if (rsi > 50) buyScore += 15;
     else sellScore += 15;
   }
 
-  const mom = data["Mom|15"] as number | null;
-  if (typeof mom === "number") {
+  const mom = toNumber(data["Mom|15"]);
+  if (mom !== null) {
     if (mom > 0) buyScore += 25;
     else if (mom < 0) sellScore += 25;
   }
 
-  const adx = data["ADX|15"] as number | null;
-  if (typeof adx === "number") {
+  const adx = toNumber(data["ADX|15"]);
+  if (adx !== null) {
     if (adx > 20) {
-      if (rsi && rsi > 50) buyScore += 25;
+      if (rsi !== null && rsi > 50) buyScore += 25;
       else sellScore += 25;
     } else {
       buyScore += 10;
@@ -161,9 +168,9 @@ function calculateDominance(data: TradingViewResponse) {
     }
   }
 
-  const macd = data["MACD.macd|15"] as number | null;
-  const signal = data["MACD.signal|15"] as number | null;
-  if (typeof macd === "number" && typeof signal === "number") {
+  const macd = toNumber(data["MACD.macd|15"]);
+  const signal = toNumber(data["MACD.signal|15"]);
+  if (macd !== null && signal !== null) {
     if (macd > signal) buyScore += 25;
     else if (macd < signal) sellScore += 25;
   }
@@ -181,45 +188,41 @@ function calculateDominance(data: TradingViewResponse) {
 // ---------- Indicators ----------
 // ---------- HullMA9 ----------
 function analyzeHullMA9(data: TradingViewResponse): IndicatorWithPrice {
-  const hullma9 = data["HullMA9|15"] as number | null;
-  const close = data["close|15"] as number | null;
+  const hullma9 = toNumber(data["HullMA9|15"]);
+  const close = toNumber(data["close|15"]);
 
   if (hullma9 === null || close === null) {
     return { price: null, value: null, recommendation: "Neutral" };
   }
 
-  if (close > hullma9) {
-    return { price: hullma9, value: hullma9, recommendation: "Buy" };
-  }
-  if (close < hullma9) {
-    return { price: hullma9, value: hullma9, recommendation: "Sell" };
-  }
+  if (close > hullma9) return { price: hullma9, value: hullma9, recommendation: "Buy" };
+  if (close < hullma9) return { price: hullma9, value: hullma9, recommendation: "Sell" };
   return { price: hullma9, value: hullma9, recommendation: "Neutral" };
 }
 
 // ---------- RSI ----------
 function analyzeRSI(data: TradingViewResponse): IndicatorWithPrice {
-  const rsi = data["RSI|15"] as number | null;
-  const rec = data["Rec.RSI|15"] as number | null;
-  const close = data["close|15"] as number | null;
+  const rsi = toNumber(data["RSI|15"]);
+  const rec = toNumber(data["Rec.RSI|15"]);
+  const close = toNumber(data["close|15"]);
 
   let recommendation: Recommendation = "Neutral";
 
-  if (typeof rec === "number") {
+  if (rec !== null) {
     if (rec > 0) recommendation = "Buy";
     else if (rec < 0) recommendation = "Sell";
-  } else if (typeof rsi === "number") {
+  } else if (rsi !== null) {
     if (rsi > 70) recommendation = "Sell";
     else if (rsi < 30) recommendation = "Buy";
   }
 
-  return { price: close, value: rsi ?? null, recommendation };
+  return { price: close, value: rsi, recommendation };
 }
 
 // ---------- EMA ----------
 function analyzeEMA(data: TradingViewResponse): IndicatorWithPrice {
-  const ema20 = data["EMA20|15"] as number | null;
-  const close = data["close|15"] as number | null;
+  const ema20 = toNumber(data["EMA20|15"]);
+  const close = toNumber(data["close|15"]);
 
   let recommendation: Recommendation = "Neutral";
   if (ema20 !== null && close !== null) {
@@ -232,9 +235,9 @@ function analyzeEMA(data: TradingViewResponse): IndicatorWithPrice {
 
 // ---------- MACD ----------
 function analyzeMACD(data: TradingViewResponse): IndicatorWithPrice {
-  const macd = data["MACD.macd|15"] as number | null;
-  const signal = data["MACD.signal|15"] as number | null;
-  const close = data["close|15"] as number | null;
+  const macd = toNumber(data["MACD.macd|15"]);
+  const signal = toNumber(data["MACD.signal|15"]);
+  const close = toNumber(data["close|15"]);
 
   let recommendation: Recommendation = "Neutral";
   if (macd !== null && signal !== null) {
@@ -247,9 +250,9 @@ function analyzeMACD(data: TradingViewResponse): IndicatorWithPrice {
 
 // ---------- Stochastic ----------
 function analyzeStoch(data: TradingViewResponse): IndicatorWithPrice {
-  const k = data["Stoch.K|15"] as number | null;
-  const d = data["Stoch.D|15"] as number | null;
-  const close = data["close|15"] as number | null;
+  const k = toNumber(data["Stoch.K|15"]);
+  const d = toNumber(data["Stoch.D|15"]);
+  const close = toNumber(data["close|15"]);
 
   let recommendation: Recommendation = "Neutral";
   if (k !== null && d !== null) {
@@ -262,10 +265,10 @@ function analyzeStoch(data: TradingViewResponse): IndicatorWithPrice {
 
 // ---------- ADX ----------
 function analyzeADX(data: TradingViewResponse): IndicatorWithPrice {
-  const adx = data["ADX|15"] as number | null;
-  const plusDI = data["ADX+DI|15"] as number | null;
-  const minusDI = data["ADX-DI|15"] as number | null;
-  const close = data["close|15"] as number | null;
+  const adx = toNumber(data["ADX|15"]);
+  const plusDI = toNumber(data["ADX+DI|15"]);
+  const minusDI = toNumber(data["ADX-DI|15"]);
+  const close = toNumber(data["close|15"]);
 
   let recommendation: Recommendation = "Neutral";
   if (adx !== null && plusDI !== null && minusDI !== null) {
@@ -278,8 +281,8 @@ function analyzeADX(data: TradingViewResponse): IndicatorWithPrice {
 
 // ---------- CCI ----------
 function analyzeCCI(data: TradingViewResponse): IndicatorWithPrice {
-  const cci = data["CCI20|15"] as number | null;
-  const close = data["close|15"] as number | null;
+  const cci = toNumber(data["CCI20|15"]);
+  const close = toNumber(data["close|15"]);
 
   let recommendation: Recommendation = "Neutral";
   if (cci !== null) {
@@ -292,8 +295,8 @@ function analyzeCCI(data: TradingViewResponse): IndicatorWithPrice {
 
 // ---------- Williams %R ----------
 function analyzeWillR(data: TradingViewResponse): IndicatorWithPrice {
-  const willr = data["W.R|15"] as number | null;
-  const close = data["close|15"] as number | null;
+  const willr = toNumber(data["W.R|15"]);
+  const close = toNumber(data["close|15"]);
 
   let recommendation: Recommendation = "Neutral";
   if (willr !== null) {
@@ -306,8 +309,8 @@ function analyzeWillR(data: TradingViewResponse): IndicatorWithPrice {
 
 // ---------- Bollinger Bands ----------
 function analyzeBBands(data: TradingViewResponse): IndicatorWithPrice {
-  const bbPower = data["BBPower|15"] as number | null;
-  const close = data["close|15"] as number | null;
+  const bbPower = toNumber(data["BBPower|15"]);
+  const close = toNumber(data["close|15"]);
 
   let recommendation: Recommendation = "Neutral";
   if (bbPower !== null) {
@@ -319,6 +322,7 @@ function analyzeBBands(data: TradingViewResponse): IndicatorWithPrice {
 }
 
 // ---------- Pivot Points ----------
+// Pivot Points
 function calculatePivotPoints(
   data: TradingViewResponse,
   high: number | null,
@@ -326,80 +330,65 @@ function calculatePivotPoints(
   priceNow: number | null
 ): PivotLevels {
   const classic: PivotGroup = {
-    s3: data["Pivot.M.Classic.S3|15"] ?? null,
-    s2: data["Pivot.M.Classic.S2|15"] ?? null,
-    s1: data["Pivot.M.Classic.S1|15"] ?? null,
-    pp: data["Pivot.M.Classic.Middle|15"] ?? null,
-    r1: data["Pivot.M.Classic.R1|15"] ?? null,
-    r2: data["Pivot.M.Classic.R2|15"] ?? null,
-    r3: data["Pivot.M.Classic.R3|15"] ?? null,
+    s3: toNumber(data["Pivot.M.Classic.S3|15"]),
+    s2: toNumber(data["Pivot.M.Classic.S2|15"]),
+    s1: toNumber(data["Pivot.M.Classic.S1|15"]),
+    pp: toNumber(data["Pivot.M.Classic.Middle|15"]),
+    r1: toNumber(data["Pivot.M.Classic.R1|15"]),
+    r2: toNumber(data["Pivot.M.Classic.R2|15"]),
+    r3: toNumber(data["Pivot.M.Classic.R3|15"]),
   };
 
   const fibonacci: PivotGroup = {
-    s3: data["Pivot.M.Fibonacci.S3|15"] ?? null,
-    s2: data["Pivot.M.Fibonacci.S2|15"] ?? null,
-    s1: data["Pivot.M.Fibonacci.S1|15"] ?? null,
-    pp: data["Pivot.M.Fibonacci.Middle|15"] ?? null,
-    r1: data["Pivot.M.Fibonacci.R1|15"] ?? null,
-    r2: data["Pivot.M.Fibonacci.R2|15"] ?? null,
-    r3: data["Pivot.M.Fibonacci.R3|15"] ?? null,
+    s3: toNumber(data["Pivot.M.Fibonacci.S3|15"]),
+    s2: toNumber(data["Pivot.M.Fibonacci.S2|15"]),
+    s1: toNumber(data["Pivot.M.Fibonacci.S1|15"]),
+    pp: toNumber(data["Pivot.M.Fibonacci.Middle|15"]),
+    r1: toNumber(data["Pivot.M.Fibonacci.R1|15"]),
+    r2: toNumber(data["Pivot.M.Fibonacci.R2|15"]),
+    r3: toNumber(data["Pivot.M.Fibonacci.R3|15"]),
   };
 
   const camarilla: PivotGroup = {
-    s3: data["Pivot.M.Camarilla.S3|15"] ?? null,
-    s2: data["Pivot.M.Camarilla.S2|15"] ?? null,
-    s1: data["Pivot.M.Camarilla.S1|15"] ?? null,
-    pp: data["Pivot.M.Camarilla.Middle|15"] ?? null,
-    r1: data["Pivot.M.Camarilla.R1|15"] ?? null,
-    r2: data["Pivot.M.Camarilla.R2|15"] ?? null,
-    r3: data["Pivot.M.Camarilla.R3|15"] ?? null,
+    s3: toNumber(data["Pivot.M.Camarilla.S3|15"]),
+    s2: toNumber(data["Pivot.M.Camarilla.S2|15"]),
+    s1: toNumber(data["Pivot.M.Camarilla.S1|15"]),
+    pp: toNumber(data["Pivot.M.Camarilla.Middle|15"]),
+    r1: toNumber(data["Pivot.M.Camarilla.R1|15"]),
+    r2: toNumber(data["Pivot.M.Camarilla.R2|15"]),
+    r3: toNumber(data["Pivot.M.Camarilla.R3|15"]),
   };
 
   const woodie: PivotGroup = {
-    s3: data["Pivot.M.Woodie.S3|15"] ?? null,
-    s2: data["Pivot.M.Woodie.S2|15"] ?? null,
-    s1: data["Pivot.M.Woodie.S1|15"] ?? null,
-    pp: data["Pivot.M.Woodie.Middle|15"] ?? null,
-    r1: data["Pivot.M.Woodie.R1|15"] ?? null,
-    r2: data["Pivot.M.Woodie.R2|15"] ?? null,
-    r3: data["Pivot.M.Woodie.R3|15"] ?? null,
+    s3: toNumber(data["Pivot.M.Woodie.S3|15"]),
+    s2: toNumber(data["Pivot.M.Woodie.S2|15"]),
+    s1: toNumber(data["Pivot.M.Woodie.S1|15"]),
+    pp: toNumber(data["Pivot.M.Woodie.Middle|15"]),
+    r1: toNumber(data["Pivot.M.Woodie.R1|15"]),
+    r2: toNumber(data["Pivot.M.Woodie.R2|15"]),
+    r3: toNumber(data["Pivot.M.Woodie.R3|15"]),
   };
 
   const demark: PivotGroup = {
     s3: null,
     s2: null,
-    s1: data["Pivot.M.Demark.S1|15"] ?? null,
-    pp: data["Pivot.M.Demark.Middle|15"] ?? null,
-    r1: data["Pivot.M.Demark.R1|15"] ?? null,
+    s1: toNumber(data["Pivot.M.Demark.S1|15"]),
+    pp: toNumber(data["Pivot.M.Demark.Middle|15"]),
+    r1: toNumber(data["Pivot.M.Demark.R1|15"]),
     r2: null,
     r3: null,
   };
 
+  const highLow = { high, low };
 
-  const highLow = {
-    high,
-    low,
-  };
-
-  // --- Recommendation logic (simple: compare to Classic R1/S1) ---
+  // Recommendation logic
   let recommendation: Recommendation = "Neutral";
   if (priceNow !== null) {
-    if (classic.r1 !== null && priceNow > classic.r1) {
-      recommendation = "Buy";
-    } else if (classic.s1 !== null && priceNow < classic.s1) {
-      recommendation = "Sell";
-    }
+    if (classic.r1 !== null && priceNow > classic.r1) recommendation = "Buy";
+    else if (classic.s1 !== null && priceNow < classic.s1) recommendation = "Sell";
   }
 
-  return {
-    classic,
-    fibonacci,
-    camarilla,
-    woodie,
-    demark,
-    highLow,
-    recommendation,
-  };
+  return { classic, fibonacci, camarilla, woodie, demark, highLow, recommendation };
 }
 
 // ---------- Final Signal ----------
