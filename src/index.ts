@@ -23,23 +23,25 @@ interface IndicatorResult {
   recommendation: Recommendation;
 }
 
+type IndicatorWithPrice = IndicatorResult & { price: number | null };
+
 interface SymbolAnalysis {
   symbol: string;
   time: string;
   priceNow: number | null;
-  hullma9: IndicatorResult & { price: number | null };
-  rsi: IndicatorResult;
+  hullma9: IndicatorWithPrice;
+  rsi: IndicatorWithPrice;
   buySellDominance: { buy: number; sell: number };
   momentum: number | null;
   trend: number | null;
   volatility: number | null;
-  ema: IndicatorResult;
-  macd: IndicatorResult;
-  stoch: IndicatorResult;
-  adx: IndicatorResult;
-  cci: IndicatorResult;
-  willr: IndicatorResult;
-  bbands: IndicatorResult;
+  ema: IndicatorWithPrice;
+  macd: IndicatorWithPrice;
+  stoch: IndicatorWithPrice;
+  adx: IndicatorWithPrice;
+  cci: IndicatorWithPrice;
+  willr: IndicatorWithPrice;
+  bbands: IndicatorWithPrice;
   pivotPoints: PivotLevels;
   finalSignal: {
     decision: Recommendation;
