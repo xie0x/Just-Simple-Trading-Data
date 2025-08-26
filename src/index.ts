@@ -320,7 +320,7 @@ function analyzeBBands(data: TradingViewResponse): IndicatorWithPrice {
 
 // ---------- Pivot Points ----------
 function calculatePivotPoints(
-  data: Record<string, number | null>,
+  data: TradingViewResponse,
   high: number | null,
   low: number | null,
   priceNow: number | null
@@ -366,10 +366,15 @@ function calculatePivotPoints(
   };
 
   const demark: PivotGroup = {
+    s3: null,
+    s2: null,
     s1: data["Pivot.M.Demark.S1|15"] ?? null,
     pp: data["Pivot.M.Demark.Middle|15"] ?? null,
     r1: data["Pivot.M.Demark.R1|15"] ?? null,
+    r2: null,
+    r3: null,
   };
+
 
   const highLow = {
     high,
