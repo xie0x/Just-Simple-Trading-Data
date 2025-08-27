@@ -24,3 +24,7 @@ TradingView Data Recommendation Signal Analyst based on TradingView's real-time 
 
 
 ![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
+
+<h2 id="about-the-project"> ❄️ Notes</h2>
+
+![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
