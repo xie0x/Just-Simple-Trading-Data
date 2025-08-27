@@ -46098,5 +46098,987 @@
         "New York"
       ]
     }
+  },
+  {
+    "symbols": [
+      {
+        "symbol": "CRYPTO:BTCUSD",
+        "time": "2025-08-27T17:49:54.621Z",
+        "priceNow": 112360.76,
+        "hullma9": {
+          "price": 112379.1862962963,
+          "value": 112379.1862962963,
+          "recommendation": "Sell"
+        },
+        "rsi": {
+          "price": 112360.76,
+          "value": 64.8286249549148,
+          "recommendation": "Neutral"
+        },
+        "buySellDominance": {
+          "buy": 100,
+          "sell": 0
+        },
+        "momentum": 583.929999999993,
+        "trend": 31.47177877326856,
+        "volatility": 625.6197352943418,
+        "ema": {
+          "price": 112360.76,
+          "value": 111893.5347329704,
+          "recommendation": "Buy"
+        },
+        "macd": {
+          "price": 112360.76,
+          "value": 253.0970263473282,
+          "recommendation": "Buy"
+        },
+        "stoch": {
+          "price": 112360.76,
+          "value": 74.89070068759916,
+          "recommendation": "Buy"
+        },
+        "adx": {
+          "price": 112360.76,
+          "value": 31.47177877326856,
+          "recommendation": "Neutral"
+        },
+        "cci": {
+          "price": 112360.76,
+          "value": 132.58105325706845,
+          "recommendation": "Buy"
+        },
+        "willr": {
+          "price": 112360.76,
+          "value": -23.776817828547305,
+          "recommendation": "Neutral"
+        },
+        "bbands": {
+          "price": 112360.76,
+          "value": 582.9016338786896,
+          "recommendation": "Buy"
+        },
+        "pivotPoints": {
+          "classic": {
+            "s3": 103683.74,
+            "s2": 107325.2,
+            "s1": 109551.39999999998,
+            "pp": 110966.65999999999,
+            "r1": 113192.85999999997,
+            "r2": 114608.11999999998,
+            "r3": 118249.57999999997
+          },
+          "fibonacci": {
+            "s3": 107325.2,
+            "s2": 108716.23771999999,
+            "s1": 109575.62228,
+            "pp": 110966.65999999999,
+            "r1": 112357.69771999998,
+            "r2": 113217.08227999999,
+            "r3": 114608.11999999998
+          },
+          "camarilla": {
+            "s3": 110776.19850000001,
+            "s2": 111109.99900000001,
+            "s1": 111443.79950000001,
+            "pp": 110966.65999999999,
+            "r1": 112111.4005,
+            "r2": 112445.201,
+            "r3": 112779.0015
+          },
+          "woodie": {
+            "s3": 106315.41000000002,
+            "s2": 107527.93500000001,
+            "s1": 109956.87000000001,
+            "pp": 111169.395,
+            "r1": 113598.33,
+            "r2": 114810.855,
+            "r3": 117239.79
+          },
+          "demark": {
+            "s3": null,
+            "s2": null,
+            "s1": 110259.03000000001,
+            "pp": 111320.475,
+            "r1": 113900.49,
+            "r2": null,
+            "r3": null
+          },
+          "highLow": {
+            "high": null,
+            "low": null
+          },
+          "recommendation": "Neutral"
+        },
+        "finalSignal": {
+          "decision": "Buy",
+          "confidence": {
+            "Buy": 41.67,
+            "Sell": 25,
+            "Neutral": 33.33
+          }
+        },
+        "activeSessions": [
+          "New York"
+        ],
+        "marketStatus": "Open"
+      },
+      {
+        "symbol": "CRYPTO:ETHUSD",
+        "time": "2025-08-27T17:49:54.690Z",
+        "priceNow": 4641.06,
+        "hullma9": {
+          "price": 4632.239481481482,
+          "value": 4632.239481481482,
+          "recommendation": "Buy"
+        },
+        "rsi": {
+          "price": 4641.06,
+          "value": 56.31448692285585,
+          "recommendation": "Neutral"
+        },
+        "buySellDominance": {
+          "buy": 72.22,
+          "sell": 27.78
+        },
+        "momentum": 1.8900000000003274,
+        "trend": 27.497178761573192,
+        "volatility": 15.395852941172052,
+        "ema": {
+          "price": 4641.06,
+          "value": 4625.930340500124,
+          "recommendation": "Buy"
+        },
+        "macd": {
+          "price": 4641.06,
+          "value": 8.429655139937495,
+          "recommendation": "Sell"
+        },
+        "stoch": {
+          "price": 4641.06,
+          "value": 60.59699219120862,
+          "recommendation": "Buy"
+        },
+        "adx": {
+          "price": 4641.06,
+          "value": 27.497178761573192,
+          "recommendation": "Neutral"
+        },
+        "cci": {
+          "price": 4641.06,
+          "value": 76.72682467202895,
+          "recommendation": "Neutral"
+        },
+        "willr": {
+          "price": 4641.06,
+          "value": -37.028344466509346,
+          "recommendation": "Neutral"
+        },
+        "bbands": {
+          "price": 4641.06,
+          "value": 18.224802986558643,
+          "recommendation": "Buy"
+        },
+        "pivotPoints": {
+          "classic": {
+            "s3": 3881.8899999999994,
+            "s2": 4199.32,
+            "s1": 4400.25,
+            "pp": 4516.75,
+            "r1": 4717.68,
+            "r2": 4834.18,
+            "r3": 5151.610000000001
+          },
+          "fibonacci": {
+            "s3": 4199.32,
+            "s2": 4320.57826,
+            "s1": 4395.4917399999995,
+            "pp": 4516.75,
+            "r1": 4638.0082600000005,
+            "r2": 4712.92174,
+            "r3": 4834.18
+          },
+          "camarilla": {
+            "s3": 4513.886750000001,
+            "s2": 4542.9845000000005,
+            "s1": 4572.08225,
+            "pp": 4516.75,
+            "r1": 4630.27775,
+            "r2": 4659.3755,
+            "r3": 4688.47325
+          },
+          "woodie": {
+            "s3": 4125.035,
+            "s2": 4220.4275,
+            "s1": 4442.465,
+            "pp": 4537.8575,
+            "r1": 4759.895,
+            "r2": 4855.2875,
+            "r3": 5077.325000000001
+          },
+          "demark": {
+            "s3": null,
+            "s2": null,
+            "s1": 4458.5,
+            "pp": 4545.875,
+            "r1": 4775.93,
+            "r2": null,
+            "r3": null
+          },
+          "highLow": {
+            "high": null,
+            "low": null
+          },
+          "recommendation": "Neutral"
+        },
+        "finalSignal": {
+          "decision": "Buy",
+          "confidence": {
+            "Buy": 50,
+            "Sell": 8.33,
+            "Neutral": 41.67
+          }
+        },
+        "activeSessions": [
+          "New York"
+        ],
+        "marketStatus": "Open"
+      },
+      {
+        "symbol": "CRYPTO:BNBUSD",
+        "time": "2025-08-27T17:49:54.782Z",
+        "priceNow": 866.37,
+        "hullma9": {
+          "price": 865.6791481481482,
+          "value": 865.6791481481482,
+          "recommendation": "Buy"
+        },
+        "rsi": {
+          "price": 866.37,
+          "value": 63.917054329252096,
+          "recommendation": "Neutral"
+        },
+        "buySellDominance": {
+          "buy": 100,
+          "sell": 0
+        },
+        "momentum": 2.2799999999999727,
+        "trend": 26.269876184312967,
+        "volatility": 3.875294117646945,
+        "ema": {
+          "price": 866.37,
+          "value": 863.0828411724907,
+          "recommendation": "Buy"
+        },
+        "macd": {
+          "price": 866.37,
+          "value": 1.6068784005923362,
+          "recommendation": "Buy"
+        },
+        "stoch": {
+          "price": 866.37,
+          "value": 89.73218181727127,
+          "recommendation": "Neutral"
+        },
+        "adx": {
+          "price": 866.37,
+          "value": 26.269876184312967,
+          "recommendation": "Neutral"
+        },
+        "cci": {
+          "price": 866.37,
+          "value": 125.64329275206573,
+          "recommendation": "Buy"
+        },
+        "willr": {
+          "price": 866.37,
+          "value": -9.385113268608979,
+          "recommendation": "Sell"
+        },
+        "bbands": {
+          "price": 866.37,
+          "value": 4.7373423364290375,
+          "recommendation": "Buy"
+        },
+        "pivotPoints": {
+          "classic": {
+            "s3": 778.5999999999999,
+            "s2": 816.3199999999999,
+            "s1": 840.05,
+            "pp": 854.04,
+            "r1": 877.77,
+            "r2": 891.76,
+            "r3": 929.48
+          },
+          "fibonacci": {
+            "s3": 816.3199999999999,
+            "s2": 830.7290399999999,
+            "s1": 839.63096,
+            "pp": 854.04,
+            "r1": 868.44904,
+            "r2": 877.35096,
+            "r3": 891.76
+          },
+          "camarilla": {
+            "s3": 853.4069999999999,
+            "s2": 856.8646666666666,
+            "s1": 860.3223333333333,
+            "pp": 854.04,
+            "r1": 867.2376666666667,
+            "r2": 870.6953333333333,
+            "r3": 874.153
+          },
+          "woodie": {
+            "s3": 807.1999999999998,
+            "s2": 818.7549999999999,
+            "s1": 844.9199999999998,
+            "pp": 856.4749999999999,
+            "r1": 882.6399999999999,
+            "r2": 894.1949999999999,
+            "r3": 920.3599999999999
+          },
+          "demark": {
+            "s3": null,
+            "s2": null,
+            "s1": 847.0449999999998,
+            "pp": 857.5374999999999,
+            "r1": 884.7649999999999,
+            "r2": null,
+            "r3": null
+          },
+          "highLow": {
+            "high": null,
+            "low": null
+          },
+          "recommendation": "Neutral"
+        },
+        "finalSignal": {
+          "decision": "Buy",
+          "confidence": {
+            "Buy": 58.33,
+            "Sell": 8.33,
+            "Neutral": 33.33
+          }
+        },
+        "activeSessions": [
+          "New York"
+        ],
+        "marketStatus": "Open"
+      },
+      {
+        "symbol": "OANDA:XAUUSD",
+        "time": "2025-08-27T17:49:54.883Z",
+        "priceNow": 3396.215,
+        "hullma9": {
+          "price": 3397.6675555555544,
+          "value": 3397.6675555555544,
+          "recommendation": "Sell"
+        },
+        "rsi": {
+          "price": 3396.215,
+          "value": 73.19820756535489,
+          "recommendation": "Sell"
+        },
+        "buySellDominance": {
+          "buy": 75,
+          "sell": 25
+        },
+        "momentum": 8.245000000000346,
+        "trend": 34.82530640097303,
+        "volatility": 12.516808823532301,
+        "ema": {
+          "price": 3396.215,
+          "value": 3389.721409511274,
+          "recommendation": "Buy"
+        },
+        "macd": {
+          "price": 3396.215,
+          "value": 4.233905746661549,
+          "recommendation": "Buy"
+        },
+        "stoch": {
+          "price": 3396.215,
+          "value": 87.18056938822855,
+          "recommendation": "Sell"
+        },
+        "adx": {
+          "price": 3396.215,
+          "value": 34.82530640097303,
+          "recommendation": "Neutral"
+        },
+        "cci": {
+          "price": 3396.215,
+          "value": 104.23805152899982,
+          "recommendation": "Buy"
+        },
+        "willr": {
+          "price": 3396.215,
+          "value": -14.45005611672163,
+          "recommendation": "Sell"
+        },
+        "bbands": {
+          "price": 3396.215,
+          "value": 7.725314272987816,
+          "recommendation": "Buy"
+        },
+        "pivotPoints": {
+          "classic": {
+            "s3": 3294.7766666666666,
+            "s2": 3337.1916666666666,
+            "s1": 3365.4683333333332,
+            "pp": 3379.6066666666666,
+            "r1": 3407.883333333333,
+            "r2": 3422.0216666666665,
+            "r3": 3464.4366666666665
+          },
+          "fibonacci": {
+            "s3": 3337.1916666666666,
+            "s2": 3353.3941966666666,
+            "s1": 3363.4041366666665,
+            "pp": 3379.6066666666666,
+            "r1": 3395.8091966666666,
+            "r2": 3405.8191366666665,
+            "r3": 3422.0216666666665
+          },
+          "camarilla": {
+            "s3": 3382.080875,
+            "s2": 3385.9689166666667,
+            "s1": 3389.8569583333333,
+            "pp": 3379.6066666666666,
+            "r1": 3397.6330416666665,
+            "r2": 3401.521083333333,
+            "r3": 3405.4091249999997
+          },
+          "woodie": {
+            "s3": 3327.1275000000005,
+            "s2": 3339.22875,
+            "s1": 3369.5425000000005,
+            "pp": 3381.64375,
+            "r1": 3411.9575000000004,
+            "r2": 3424.05875,
+            "r3": 3454.3725000000004
+          },
+          "demark": {
+            "s3": null,
+            "s2": null,
+            "s1": 3372.5374999999995,
+            "pp": 3383.1412499999997,
+            "r1": 3414.9524999999994,
+            "r2": null,
+            "r3": null
+          },
+          "highLow": {
+            "high": null,
+            "low": null
+          },
+          "recommendation": "Neutral"
+        },
+        "finalSignal": {
+          "decision": "Sell",
+          "confidence": {
+            "Buy": 28.57,
+            "Sell": 57.14,
+            "Neutral": 14.29
+          }
+        },
+        "activeSessions": [
+          "New York"
+        ],
+        "marketStatus": "Open"
+      },
+      {
+        "symbol": "CRYPTO:SOLUSD",
+        "time": "2025-08-27T17:49:54.949Z",
+        "priceNow": 209.57,
+        "hullma9": {
+          "price": 209.5518888888889,
+          "value": 209.5518888888889,
+          "recommendation": "Buy"
+        },
+        "rsi": {
+          "price": 209.57,
+          "value": 67.49601049707503,
+          "recommendation": "Neutral"
+        },
+        "buySellDominance": {
+          "buy": 100,
+          "sell": 0
+        },
+        "momentum": 2.0900000000000034,
+        "trend": 40.2098287587636,
+        "volatility": 2.791323529411841,
+        "ema": {
+          "price": 209.57,
+          "value": 207.35808939186836,
+          "recommendation": "Buy"
+        },
+        "macd": {
+          "price": 209.57,
+          "value": 1.3342287053548887,
+          "recommendation": "Buy"
+        },
+        "stoch": {
+          "price": 209.57,
+          "value": 93.2895198131716,
+          "recommendation": "Neutral"
+        },
+        "adx": {
+          "price": 209.57,
+          "value": 40.2098287587636,
+          "recommendation": "Neutral"
+        },
+        "cci": {
+          "price": 209.57,
+          "value": 121.46324755777928,
+          "recommendation": "Buy"
+        },
+        "willr": {
+          "price": 209.57,
+          "value": -10.141509433962403,
+          "recommendation": "Sell"
+        },
+        "bbands": {
+          "price": 209.57,
+          "value": 3.422522527421421,
+          "recommendation": "Buy"
+        },
+        "pivotPoints": {
+          "classic": {
+            "s3": 168.53000000000003,
+            "s2": 180.88000000000002,
+            "s1": 188.37000000000003,
+            "pp": 193.23000000000002,
+            "r1": 200.72000000000003,
+            "r2": 205.58,
+            "r3": 217.93
+          },
+          "fibonacci": {
+            "s3": 180.88000000000002,
+            "s2": 185.59770000000003,
+            "s1": 188.5123,
+            "pp": 193.23000000000002,
+            "r1": 197.94770000000003,
+            "r2": 200.8623,
+            "r3": 205.58
+          },
+          "camarilla": {
+            "s3": 192.46375,
+            "s2": 193.59583333333336,
+            "s1": 194.7279166666667,
+            "pp": 193.23000000000002,
+            "r1": 196.99208333333334,
+            "r2": 198.12416666666667,
+            "r3": 199.25625000000002
+          },
+          "woodie": {
+            "s3": 177.33500000000004,
+            "s2": 181.53750000000002,
+            "s1": 189.68500000000003,
+            "pp": 193.88750000000002,
+            "r1": 202.03500000000003,
+            "r2": 206.2375,
+            "r3": 214.38500000000002
+          },
+          "demark": {
+            "s3": null,
+            "s2": null,
+            "s1": 190.80000000000004,
+            "pp": 194.44500000000002,
+            "r1": 203.15000000000003,
+            "r2": null,
+            "r3": null
+          },
+          "highLow": {
+            "high": null,
+            "low": null
+          },
+          "recommendation": "Buy"
+        },
+        "finalSignal": {
+          "decision": "Buy",
+          "confidence": {
+            "Buy": 66.67,
+            "Sell": 8.33,
+            "Neutral": 25
+          }
+        },
+        "activeSessions": [
+          "New York"
+        ],
+        "marketStatus": "Open"
+      },
+      {
+        "symbol": "CRYPTO:HYPEHUSD",
+        "time": "2025-08-27T17:49:55.133Z",
+        "priceNow": 50.291,
+        "hullma9": {
+          "price": 50.15313333333334,
+          "value": 50.15313333333334,
+          "recommendation": "Buy"
+        },
+        "rsi": {
+          "price": 50.291,
+          "value": 57.11095059460347,
+          "recommendation": "Neutral"
+        },
+        "buySellDominance": {
+          "buy": 72.22,
+          "sell": 27.78
+        },
+        "momentum": 0.06499999999999773,
+        "trend": 21.320961368810686,
+        "volatility": 0.35965588235297474,
+        "ema": {
+          "price": 50.291,
+          "value": 49.991601841595426,
+          "recommendation": "Buy"
+        },
+        "macd": {
+          "price": 50.291,
+          "value": 0.14909834007109168,
+          "recommendation": "Sell"
+        },
+        "stoch": {
+          "price": 50.291,
+          "value": 54.92620474627922,
+          "recommendation": "Buy"
+        },
+        "adx": {
+          "price": 50.291,
+          "value": 21.320961368810686,
+          "recommendation": "Neutral"
+        },
+        "cci": {
+          "price": 50.291,
+          "value": 61.18604933770837,
+          "recommendation": "Neutral"
+        },
+        "willr": {
+          "price": 50.291,
+          "value": -38.27977315689993,
+          "recommendation": "Neutral"
+        },
+        "bbands": {
+          "price": 50.291,
+          "value": 0.39338655765075714,
+          "recommendation": "Buy"
+        },
+        "pivotPoints": {
+          "classic": {
+            "s3": 32.24933333333333,
+            "s2": 39.60733333333333,
+            "s1": 44.19266666666665,
+            "pp": 46.96533333333333,
+            "r1": 51.55066666666665,
+            "r2": 54.32333333333332,
+            "r3": 61.68133333333332
+          },
+          "fibonacci": {
+            "s3": 39.60733333333333,
+            "s2": 42.41808933333333,
+            "s1": 44.15457733333333,
+            "pp": 46.96533333333333,
+            "r1": 49.776089333333324,
+            "r2": 51.512577333333326,
+            "r3": 54.32333333333332
+          },
+          "camarilla": {
+            "s3": 46.75455,
+            "s2": 47.42903333333334,
+            "s1": 48.103516666666664,
+            "pp": 46.96533333333333,
+            "r1": 49.45248333333333,
+            "r2": 50.12696666666666,
+            "r3": 50.801449999999996
+          },
+          "woodie": {
+            "s3": 37.74099999999999,
+            "s2": 40.0605,
+            "s1": 45.09899999999999,
+            "pp": 47.418499999999995,
+            "r1": 52.45699999999999,
+            "r2": 54.77649999999999,
+            "r3": 59.81499999999998
+          },
+          "demark": {
+            "s3": null,
+            "s2": null,
+            "s1": 45.57899999999999,
+            "pp": 47.6585,
+            "r1": 52.93699999999999,
+            "r2": null,
+            "r3": null
+          },
+          "highLow": {
+            "high": null,
+            "low": null
+          },
+          "recommendation": "Neutral"
+        },
+        "finalSignal": {
+          "decision": "Buy",
+          "confidence": {
+            "Buy": 50,
+            "Sell": 8.33,
+            "Neutral": 41.67
+          }
+        },
+        "activeSessions": [
+          "New York"
+        ],
+        "marketStatus": "Open"
+      },
+      {
+        "symbol": "CRYPTO:XRPUSD",
+        "time": "2025-08-27T17:49:55.208Z",
+        "priceNow": 3.0326,
+        "hullma9": {
+          "price": 3.0297029629629626,
+          "value": 3.0297029629629626,
+          "recommendation": "Buy"
+        },
+        "rsi": {
+          "price": 3.0326,
+          "value": 65.08151038625877,
+          "recommendation": "Neutral"
+        },
+        "buySellDominance": {
+          "buy": 88.24,
+          "sell": 11.76
+        },
+        "momentum": 0.028000000000000025,
+        "trend": 19.457841515623645,
+        "volatility": 0.01341058823529373,
+        "ema": {
+          "price": 3.0326,
+          "value": 3.0147833498173684,
+          "recommendation": "Buy"
+        },
+        "macd": {
+          "price": 3.0326,
+          "value": 0.005696548942141888,
+          "recommendation": "Buy"
+        },
+        "stoch": {
+          "price": 3.0326,
+          "value": 85.33486987853951,
+          "recommendation": "Neutral"
+        },
+        "adx": {
+          "price": 3.0326,
+          "value": 19.457841515623645,
+          "recommendation": "Neutral"
+        },
+        "cci": {
+          "price": 3.0326,
+          "value": 202.27291718896672,
+          "recommendation": "Buy"
+        },
+        "willr": {
+          "price": 3.0326,
+          "value": -7.008086253369672,
+          "recommendation": "Sell"
+        },
+        "bbands": {
+          "price": 3.0326,
+          "value": 0.02792445757614015,
+          "recommendation": "Buy"
+        },
+        "pivotPoints": {
+          "classic": {
+            "s3": 2.5138666666666665,
+            "s2": 2.7472666666666665,
+            "s1": 2.8799333333333332,
+            "pp": 2.9806666666666666,
+            "r1": 3.1133333333333333,
+            "r2": 3.2140666666666666,
+            "r3": 3.4474666666666667
+          },
+          "fibonacci": {
+            "s3": 2.7472666666666665,
+            "s2": 2.8364254666666664,
+            "s1": 2.8915078666666667,
+            "pp": 2.9806666666666666,
+            "r1": 3.0698254666666664,
+            "r2": 3.1249078666666668,
+            "r3": 3.2140666666666666
+          },
+          "camarilla": {
+            "s3": 2.948415,
+            "s2": 2.96981,
+            "s1": 2.991205,
+            "pp": 2.9806666666666666,
+            "r1": 3.033995,
+            "r2": 3.05539,
+            "r3": 3.076785
+          },
+          "woodie": {
+            "s3": 2.6624,
+            "s2": 2.7552,
+            "s1": 2.8958,
+            "pp": 2.9886,
+            "r1": 3.1292,
+            "r2": 3.222,
+            "r3": 3.3626
+          },
+          "demark": {
+            "s3": null,
+            "s2": null,
+            "s1": 2.9302999999999995,
+            "pp": 3.0058499999999997,
+            "r1": 3.1636999999999995,
+            "r2": null,
+            "r3": null
+          },
+          "highLow": {
+            "high": null,
+            "low": null
+          },
+          "recommendation": "Neutral"
+        },
+        "finalSignal": {
+          "decision": "Buy",
+          "confidence": {
+            "Buy": 58.33,
+            "Sell": 8.33,
+            "Neutral": 33.33
+          }
+        },
+        "activeSessions": [
+          "New York"
+        ],
+        "marketStatus": "Open"
+      },
+      {
+        "symbol": "CRYPTO:SUIUSD",
+        "time": "2025-08-27T17:49:55.332Z",
+        "priceNow": 3.4993,
+        "hullma9": {
+          "price": 3.4963718518518525,
+          "value": 3.4963718518518525,
+          "recommendation": "Buy"
+        },
+        "rsi": {
+          "price": 3.4993,
+          "value": 59.40659351509545,
+          "recommendation": "Neutral"
+        },
+        "buySellDominance": {
+          "buy": 100,
+          "sell": 0
+        },
+        "momentum": 0.0002999999999997449,
+        "trend": 26.368750680232246,
+        "volatility": 0.025252941176470145,
+        "ema": {
+          "price": 3.4993,
+          "value": 3.480328666225074,
+          "recommendation": "Buy"
+        },
+        "macd": {
+          "price": 3.4993,
+          "value": 0.010770529733058254,
+          "recommendation": "Buy"
+        },
+        "stoch": {
+          "price": 3.4993,
+          "value": 66.62216573669927,
+          "recommendation": "Buy"
+        },
+        "adx": {
+          "price": 3.4993,
+          "value": 26.368750680232246,
+          "recommendation": "Neutral"
+        },
+        "cci": {
+          "price": 3.4993,
+          "value": 91.16690876391098,
+          "recommendation": "Neutral"
+        },
+        "willr": {
+          "price": 3.4993,
+          "value": -31.182795698925236,
+          "recommendation": "Neutral"
+        },
+        "bbands": {
+          "price": 3.4993,
+          "value": 0.031727889149260946,
+          "recommendation": "Buy"
+        },
+        "pivotPoints": {
+          "classic": {
+            "s3": 3.0909,
+            "s2": 3.2571,
+            "s1": 3.3551999999999995,
+            "pp": 3.4233,
+            "r1": 3.5213999999999994,
+            "r2": 3.5894999999999997,
+            "r3": 3.7556999999999996
+          },
+          "fibonacci": {
+            "s3": 3.2571,
+            "s2": 3.3205883999999997,
+            "s1": 3.3598116,
+            "pp": 3.4233,
+            "r1": 3.4867883999999996,
+            "r2": 3.5260116,
+            "r3": 3.5894999999999997
+          },
+          "camarilla": {
+            "s3": 3.407595,
+            "s2": 3.4228300000000003,
+            "s1": 3.438065,
+            "pp": 3.4233,
+            "r1": 3.468535,
+            "r2": 3.48377,
+            "r3": 3.499005
+          },
+          "woodie": {
+            "s3": 3.204,
+            "s2": 3.2646,
+            "s1": 3.3702,
+            "pp": 3.4308,
+            "r1": 3.5364,
+            "r2": 3.597,
+            "r3": 3.7026
+          },
+          "demark": {
+            "s3": null,
+            "s2": null,
+            "s1": 3.38925,
+            "pp": 3.440325,
+            "r1": 3.55545,
+            "r2": null,
+            "r3": null
+          },
+          "highLow": {
+            "high": null,
+            "low": null
+          },
+          "recommendation": "Neutral"
+        },
+        "finalSignal": {
+          "decision": "Buy",
+          "confidence": {
+            "Buy": 58.33,
+            "Sell": 0,
+            "Neutral": 41.67
+          }
+        },
+        "activeSessions": [
+          "New York"
+        ],
+        "marketStatus": "Open"
+      }
+    ],
+    "summary": {
+      "time": "2025-08-27T17:49:55.332Z",
+      "totalSymbols": 8,
+      "buyPercent": 88.46,
+      "sellPercent": 11.54,
+      "neutralPercent": 0,
+      "activeSessions": [
+        "New York"
+      ]
+    }
   }
 ]
