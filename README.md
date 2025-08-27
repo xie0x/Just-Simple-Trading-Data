@@ -1,7 +1,7 @@
 # TradingView Data Signal Analyzer
 ![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 <h2 id="about-the-project"> :pencil: About Project</h2>
-Simple trading recommendation scanner based on real-time TradingView data Scanner API.
+TradingView Data Recommendation Signal Analyzer based on real-time TradingView Scanner API.
 <p></p>
 <b>Warning</b>: 
 
